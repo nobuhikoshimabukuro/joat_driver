@@ -59,14 +59,14 @@ class DriverController extends Controller
 
 		
 
-		if (1 == 1) {
+		if (1 == 2) {
 			session()->put(['driver_id' => 1]);
 			session()->save();
 
 			return redirect(route('driver.index'));
 		} else {
 
-			// $errors["login_error_message"]= $return_array->login_error_message;
+			$errors["login_error_message"]= "test";
             return $return_result($errors);   
 		}
 	}
