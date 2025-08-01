@@ -137,7 +137,7 @@
                 <ul class="nav flex-column">
               
                   <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center gap-2 active" href="#">
+                    <a class="nav-link d-flex align-items-center gap-2 active" href="{{route('manager.dashboard')}}">
                       <i class="fas fa-network-wired"></i> Dashboard
                     </a>
                   </li>
@@ -152,7 +152,7 @@
                     <div class="collapse ps-4" id="masterSubMenu">
                       <ul class="nav flex-column">
                         <li class="nav-item">
-                          <a class="nav-link d-flex align-items-center gap-2" href="#">
+                          <a class="nav-link d-flex align-items-center gap-2" href="{{route('manager.master.m_company')}}">
                             <i class="fas fa-building"></i> 会社マスタ
                           </a>
                         </li>

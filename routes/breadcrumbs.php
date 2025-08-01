@@ -15,6 +15,15 @@ $breadcrumbs = [
         'url' => route('manager.dashboard'),
     ],
 
+
+    [
+        'parent' => null,
+        'name' => 'manager.master.m_company',
+        'label' => '会社マスタ',
+        'url' => route('manager.master.m_company'),
+    ],
+
+
     // 利用会社start
     // ダッシュボード
     [
