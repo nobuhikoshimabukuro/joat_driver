@@ -13,6 +13,10 @@
 
 </style>
 
+{{-- header --}}
+@include('User.Common.header')
+
+
 <div class="loader-area">
     <div class="loader">
     </div>

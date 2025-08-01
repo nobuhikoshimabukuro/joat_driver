@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\web\WebController;
 
-require __DIR__.'/driver.php';
+require __DIR__.'/company.php';
 require __DIR__.'/user.php';
 require __DIR__.'/manager.php';
 

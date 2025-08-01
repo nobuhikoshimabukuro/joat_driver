@@ -1,0 +1,274 @@
+body {
+	background-color: #eff0f1;
+}
+
+a{
+    color: #333;
+    text-decoration: none;    
+}
+
+/* .menu-btn{
+        height: 115px;
+		text-align: center;
+} */
+
+.menu-button {
+	background-color: #dfdcde;
+	border: 2px solid;
+	border-radius: 0.5rem;
+	text-align: center;
+}
+
+.menu-button:hover {
+	background-color: #f8fafc;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.original-readonly {
+    pointer-events: none; /* クリック・操作を無効化 */
+    background-color: #e9ecef; /* 無効化っぽい見た目 */
+    color: #6c757d;
+}
+
+
+.original-nowrap {
+    white-space: nowrap; /* 改行を防ぐ */
+}
+
+.Breadcrumbs {
+    font-size: 16px;
+    font-weight: 450;
+    color: #10086a;
+    display: flex;
+    gap: 0.5em;
+    flex-wrap: wrap;
+}
+
+.Breadcrumbs a {
+    position: relative;
+    text-decoration: none;
+    color: #10086a;
+    padding-bottom: 2px;
+}
+
+/* 疑似要素で下線を定義 */
+.Breadcrumbs a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 1px;
+    background-color: #3020dc;
+    transition: width 0.3s ease;
+}
+
+/* hover 時にスライド表示 */
+.Breadcrumbs a:hover::after {
+    width: 100%;
+}
+
+.Breadcrumbs .active {
+    font-size: 16px;
+    font-weight: 600;
+    color: #080437;
+}
+
+    
+/* 基本編集禁止 ↓↓*/
+
+
+.loader-area{
+    position: fixed;
+    background: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+    top: 0; 
+    left: 0;
+    z-index: 100000;
+}
+
+.loader {
+    position: fixed;    
+    top: 48%;
+    left: 48%;
+    z-index: 100001;
+}
+
+.processing-area{
+    position: fixed;
+    background: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+    top: 0; 
+    left: 0;
+    z-index: 100000;
+}
+
+.processing {
+    position: fixed;    
+    top: 48%;
+    left: calc((100% - 120px) / 2);
+    z-index: 100001;
+}
+
+/* 基本編集禁止 ↑↑*/
+
+
+    
+
+    
+    /* 参考URL */
+    /* https://css-loaders.com/colorful/ */
+
+    /* loaderデザイン↓↓ */
+    .loader {
+        width: 50px;
+        padding: 8px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: #25b09b;
+        --_m: 
+        conic-gradient(#0000 10%,#000),
+        linear-gradient(#000 0 0) content-box;
+        -webkit-mask: var(--_m);
+        mask: var(--_m);
+        -webkit-mask-composite: source-out;
+        mask-composite: subtract;
+        animation: l3 1s infinite linear;
+    }
+    @keyframes l3 {to{transform: rotate(1turn)}}
+
+    /* loaderデザイン↑↑ */
+
+    
+    
+/* processingデザイン↓↓ */
+    
+    
+    .processing {
+    width: 120px;
+    height: 22px;
+    border-radius: 20px;
+    color: #514b82;
+    border: 2px solid;
+    position: relative;
+  }
+  .processing::before {
+    content: "";
+    position: absolute;
+    margin: 2px;
+    inset: 0 100% 0 0;
+    border-radius: inherit;
+    background: currentColor;
+    animation: l6 2s infinite;
+  }
+  @keyframes l6 {
+      100% {inset:0}
+  }
+
+
+/* processingデザイン↑↑ */
+
+
+
+/* FSI.Nguyen 画面タイトル ↓↓ */
+.screen-title h2 {
+    display: inline-block; /* 文字の長さに合わせる */
+    position: relative;
+}
+
+/* .screen-title h2 {
+    padding: 0.2em 0.3em;
+    border-bottom: 4px dotted #9ebbc1;
+} */
+
+/* FSI.Nguyen 作成 スマホサイズ用のタイトル */ 
+@media (max-width: 767.98px) {
+    .screen-title h2 {
+        font-size: calc(1.125rem + 0.9vw);
+    }
+}
+
+.screen-title h2::after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: -8px; /* 下線の位置 */
+    left: 0;
+    width: 100%; /* h2の幅に合わせる */
+    height: 4px; /* 下線の太さ */
+    background: #9ebbc1; /* 下線の色 */
+    border-radius: 2px; /* 角を丸める */
+}
+/* FSI.Nguyen 画面タイトル ↑↑ */
+
+.checkbox-size-l {
+    transform: scale(2.5);
+}
+
+.checkbox-size-m {
+    transform: scale(1.8);
+}
+
+.checkbox-size-s {
+    transform: scale(1.2);
+}
+
+.data_list-area{
+    padding: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.input-area{
+    padding: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.search-area{
+    padding: 10px;
+    margin: 10px;
+}
+
+.search-table th{
+    text-align: center;
+
+}
+
+ 
+.order_alert{
+    color: red;
+    font: bold;
+}
+
+.item-flash{
+	animation: flash 2s linear infinite;
+}
+@keyframes flash {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.search-table th {
+    white-space: nowrap; /* 強制的に改行させない */
+}
+
+.data_list_table th {
+    white-space: nowrap; /* 強制的に改行させない */
+}
+
+.data-display-area{
+
+    overflow-x: auto;
+    overflow-y: auto;
+  }
