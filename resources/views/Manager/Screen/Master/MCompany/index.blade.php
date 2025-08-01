@@ -12,6 +12,38 @@
 {{-- メインエリア --}}
 @section('content')  
 
+
+<table class="table table-hover">
+  <tr>
+    <th>
+    </th>
+
+    <th>
+    </th>
+
+    <th>
+    </th>
+  </tr>
+
+  @foreach ($prefecture_info as $pref)
+  <tr>
+    <th>
+      {{ $pref->prefecture_code }} 
+    </th>
+
+    <th>
+      {{ $pref->prefecture }}
+    </th>
+
+    <th>
+      {{ $pref->prefecture_kana }}
+    </th>
+  </tr>
+  @endforeach
+
+</table>
+
+
 @endsection
 
 
