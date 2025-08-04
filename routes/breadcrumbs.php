@@ -17,10 +17,24 @@ $breadcrumbs = [
 
 
     [
-        'parent' => null,
-        'name' => 'manager.master.m_company',
-        'label' => '会社マスタ',
-        'url' => route('manager.master.m_company'),
+        'parent' => 'manager.dashboard',
+        'name' => 'manager.master.m_employer',
+        'label' => '利用会社情報一覧',
+        'url' => route('manager.master.m_employer'),
+    ],
+
+    [
+        'parent' => 'manager.master.m_employer',
+        'name' => 'manager.master.m_employer.entry',
+        'label' => '利用会社情報編集',
+        'url' => route('manager.master.m_employer.entry'),
+    ],
+
+    [
+        'parent' => 'manager.dashboard',
+        'name' => 'manager.master.m_employer_user',
+        'label' => '利用会社ユーザー情報一覧',
+        'url' => route('manager.master.m_employer_user'),
     ],
 
 

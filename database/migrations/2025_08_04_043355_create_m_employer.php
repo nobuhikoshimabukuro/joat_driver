@@ -12,33 +12,38 @@ return new class extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('m_company')) {
+        if (Schema::hasTable('m_employer')) {
             // テーブルが存在していればリターン
             return;
         }
-        Schema::create('m_company', function (Blueprint $table) {
+        Schema::create('m_employer', function (Blueprint $table) {
 
             $table
-                ->bigIncrements('company_id')
+                ->bigIncrements('employer_id')
                 ->comment('連番');            
 
             $table
-                ->string('company_cd', 30)
-                ->comment('会社CD:ログイン時に入力');
-                
-            $table
-            ->string('corporate_no', 30)                
-            ->comment('法人番号');                        
-                        
-
-            $table
-                ->string('company_name', 100)
-                ->comment('会社名');
-
-            $table
-                ->string('company_name_kana', 100)
+                ->string('employer_category', 1)
                 ->nullable()
-                ->comment('会社名_カナ');
+                ->comment('求人元区分:1=>個人事業主、2=>法人');
+
+            $table
+                ->string('corporate_number', 30)                
+                ->nullable()
+                ->comment('法人番号');
+
+            $table
+                ->string('employer_cd', 30)
+                ->comment('求人元CD:ログイン時に入力の為、重複チェック必須');
+
+            $table
+                ->string('employer_name', 100)
+                ->comment('求人元名');
+
+            $table
+                ->string('employer_name_kana', 100)
+                ->nullable()
+                ->comment('求人元名_カナ');           
                 
             $table
                 ->string('postal_code', 7)
@@ -125,7 +130,7 @@ return new class extends Migration
                 ->nullable()
                 ->comment('削除者');
         });
-        DB::statement("ALTER TABLE m_company COMMENT '会社マスタ'");
+        DB::statement("ALTER TABLE m_employer COMMENT '求人元マスタ'");
     }
 
     /**
@@ -135,6 +140,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('m_company');
+        Schema::dropIfExists('m_employer');
     }
 };

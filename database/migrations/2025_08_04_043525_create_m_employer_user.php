@@ -12,19 +12,19 @@ return new class extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('m_company_user')) {
+        if (Schema::hasTable('m_employer_user')) {
             // テーブルが存在していればリターン
             return;
         }
-        Schema::create('m_company_user', function (Blueprint $table) {
+        Schema::create('m_employer_user', function (Blueprint $table) {
 
             $table
                 ->bigIncrements('id')
                 ->comment('連番');  
                 
             $table
-                ->bigInteger('company_id')
-                ->comment('会社ID');
+                ->bigInteger('employer_id')
+                ->comment('求人元ID');
 
             $table
                 ->string('user_cd', 30)
@@ -107,7 +107,7 @@ return new class extends Migration
                 ->nullable()
                 ->comment('削除者');
         });
-        DB::statement("ALTER TABLE m_company_user COMMENT '利用会社ユーザーマスタ'");
+        DB::statement("ALTER TABLE m_employer_user COMMENT '求人元ユーザーマスタ'");
     }
 
     /**
@@ -117,6 +117,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('m_company_user');
+        Schema::dropIfExists('m_employer_user');
     }
 };

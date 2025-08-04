@@ -1,10 +1,10 @@
-@extends('Company.Common.layouts_app')
+@extends('Manager.Common.layouts_app')
 
-@section('title', 'DashBoard')
+@section('title', '利用会社ユーザー情報一覧')
 
 
 @section('pagestyle')
-<!-- 画面別CSS -->
+<!-- 画面別CSS6 -->
 <style>  
 </style>
 @endsection
@@ -12,16 +12,8 @@
 {{-- メインエリア --}}
 @section('content')  
 
-<table class="table w-100">
-  <tr>
-    <th>
-      1
-    </th>
-    <th>
-      2
-    </th>
-  </tr>
-</table>
+
+
 @endsection
 
 

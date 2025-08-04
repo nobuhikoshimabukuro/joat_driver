@@ -276,57 +276,6 @@ $(document).on("keydown", "input, select", function (e) {
 });
 
 
-// Nguyen 20231218 修正 IME変換中を考慮
-// 入力時に数字以外の入力値を削除 
-$(document).on("input compositionstart compositionend", ".numeric", function (e) {
-
-  if (e.type === "compositionstart") {
-    $(this).data("composition", true);
-    return;
-  }
-
-  // 初期値設定
-  var target_val;
-
-    // 'hyphen' クラスが存在するかチェック
-    if ($(this).hasClass('hyphen')) {
-      // ハイフン 郵便番号や電話番号など
-      target_val = /[^0-9０-９ー-]/g;  // 半角・全角数字、ハイフン（-）と全角マイナス記号（ー）を許容
-
-    } else if ($(this).hasClass('weight') || $(this).hasClass('corporate_no')) {
-      // 重さ
-      target_val = /[^\d０-９.]/g;  // 半角・全角数字のみ許容
-
-    } else {
-      // その他 金額など
-      target_val = /[^\d０-９,]/g;  // 半角・全角数字、カンマのみ許容
-
-    }
-
-
-  if (e.type === "compositionend") {
-    $(this).data("composition", false);
-    // 変換完了時に不要な文字を削除
-    var inputValue = $(this).val();
-    var sanitizedValue = inputValue.replace(target_val, ""); // 文字を削除
-
-    if (inputValue !== sanitizedValue) {
-      $(this).val(sanitizedValue);
-    }
-    return;
-  }
-
-  if ($(this).data("composition")) {
-    return;
-  }
-
-  var inputValue = $(this).val();
-  var sanitizedValue = inputValue.replace(target_val, ""); // 文字を削除
-
-  if (inputValue !== sanitizedValue) {
-    $(this).val(sanitizedValue);
-  }
-});
 
 // input typeにフォーカスがあたった場合、全選択する
 $(document).on("focus", "input, textarea", function (e) {
@@ -350,7 +299,7 @@ $(document).on("blur", ".numeric", function (e) {
   numString = fullToHalf(numString);
 
   // 入力が数字でない場合、何も入力されていない場合
-  if (!numString || isNaN(numString) || $(this).hasClass('hyphen') || $(this).hasClass('weight') || $(this).hasClass('corporate_no')) {
+  if (!numString || isNaN(numString) || $(this).hasClass('hyphen') || $(this).hasClass('weight') || $(this).hasClass('corporate_number')) {
     // 処理中断
     return;
   }

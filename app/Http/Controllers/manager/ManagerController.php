@@ -10,6 +10,7 @@ class ManagerController extends Controller
     function index(Request $request)
 	{
 
+		
         return redirect(route('manager.dashboard'));
 	}
 

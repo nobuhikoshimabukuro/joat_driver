@@ -52,9 +52,9 @@ class Common
 
 			$m_user = m_user_model::select(
 				'm_user.user_id',
-				'm_user.company_id',
-				'm_company.company_name',
-				'm_company.company_name_kana',
+				'm_user.employer_id',
+				'm_employer.employer_name',
+				'm_employer.employer_name_kana',
 				'm_user.user_cd',
 				'm_user.last_name',
 				'm_user.first_name',
@@ -63,7 +63,7 @@ class Common
 				'm_user.permission AS user_permission',
 			)
 				->where('m_user.user_id', $user_id)
-				->leftJoin('m_company', 'm_user.company_id', '=', 'm_company.company_id')
+				->leftJoin('m_employer', 'm_user.employer_id', '=', 'm_employer.employer_id')
 				->first();
 
 			//user_idでユーザー情報取得確認
@@ -72,9 +72,9 @@ class Common
 				self::destroy_user_session();
 
 				session()->put(['user_id' => $m_user->user_id]);
-				session()->put(['company_id' => $m_user->company_id]);
-				session()->put(['company_name' => $m_user->company_name]);
-				session()->put(['company_name_kana' => $m_user->company_name_kana]);
+				session()->put(['employer_id' => $m_user->employer_id]);
+				session()->put(['employer_name' => $m_user->employer_name]);
+				session()->put(['employer_name_kana' => $m_user->employer_name_kana]);
 				session()->put(['user_cd' => $m_user->user_cd]);
 				session()->put(['user_last_name' => $m_user->last_name]);
 				session()->put(['user_first_name' => $m_user->first_name]);
@@ -167,9 +167,9 @@ class Common
 		session()->forget(
 			[
 				'user_id',
-				'company_id',
-				'company_name',
-				'company_name_kana',
+				'employer_id',
+				'employer_name',
+				'employer_name_kana',
 				'user_cd',
 				'user_last_name',
 				'user_first_name',
@@ -217,12 +217,12 @@ class Common
 	public static function set_user_menu()
 	{
 
-		$company_id = session("company_id");
+		$employer_id = session("employer_id");
 		$user_id = session("user_id");
 
 		$user_permission[] = session("user_permission");
 		// 権限 配列に変換したものを取得
-		$company_permission = t_company_permission_model::where('company_id', $company_id)
+		$company_permission = t_company_permission_model::where('employer_id', $employer_id)
 			->pluck('permission') // permission列だけ取り出して
 			->toArray();          // 配列に変換       
 
@@ -235,7 +235,7 @@ class Common
 
 		// user_menu_info start
 
-		if($company_id == 1){
+		if($employer_id == 1){
 
 			
 			$user_menu_info[] = (object)
@@ -368,7 +368,7 @@ class Common
 
 			$user_master_menu_info[] = (object)
 			[
-				"href" => route('user.master.m_company'),
+				"href" => route('user.master.m_employer'),
 				"icon" => "fas fa-network-wired",
 				"title" => "会社情報",
 				"menu_flg" => 1,
@@ -802,7 +802,7 @@ class Common
         WITH base_data AS ( 
             SELECT
                 slip_number
-                , company_id
+                , employer_id
                 , shipment_date
                 , shipper_post_code
                 , shipper_address1
@@ -828,7 +828,7 @@ class Common
             UNION 
             SELECT
                 slip_number
-                , company_id
+                , employer_id
                 , shipment_date
                 , shipper_post_code
                 , shipper_address1
@@ -885,9 +885,9 @@ class Common
                 , remarks
         ) 
         SELECT
-            m_company.company_name
+            m_employer.employer_name
             , base_data.slip_number
-            , base_data.company_id
+            , base_data.employer_id
             , base_data.shipment_date
             , base_data.shipper_post_code
             , base_data.shipper_address1
@@ -914,8 +914,8 @@ class Common
             base_data 
             LEFT JOIN w_f_delivery_status 
                 ON base_data.slip_number = w_f_delivery_status.slip_number 
-            LEFT JOIN m_company 
-                ON base_data.company_id = m_company.company_id
+            LEFT JOIN m_employer 
+                ON base_data.employer_id = m_employer.employer_id
         
         ";
 

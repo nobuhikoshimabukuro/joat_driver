@@ -141,7 +141,7 @@ p {
   <body>
     <header class="pb-1">
         <h2>AppName</h2>    
-        <h4>{{session('company_name')}}<br>{{session('user_last_name')}} {{session('user_first_name')}}</h4>    
+        <h4>{{session('employer_name')}}<br>{{session('user_last_name')}} {{session('user_first_name')}}</h4>    
 
     </header>
   

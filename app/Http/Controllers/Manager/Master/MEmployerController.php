@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\File;
 
 // Model ↓
 use App\Models\MAddressModel;
-use App\Models\MCompanyModel;
+use App\Models\MEmployerModel;
+use App\Models\MSubKindModel;
 
 
 
@@ -27,7 +28,7 @@ use App\Models\MCompanyModel;
 use App\Http\Requests\session_confirmation_request;
 // Request ↑
 
-class MCompanyController extends Controller
+class MEmployerController extends Controller
 {
     function index(Request $request)
 	{
@@ -35,7 +36,29 @@ class MCompanyController extends Controller
 
 		$prefecture_info = MAddressModel::GetPrefectureInfo();
         
-		return view('Manager.Screen.Master.MCompany.index', compact('prefecture_info'));
+		$m_employer = MEmployerModel::get();
+		return view('Manager.Screen.Master.MEmployer.index', compact('m_employer'));
+
+
+	}
+
+	function entry(Request $request)
+	{
+
+		$employer_id = $request->employer_id;	
+		
+		$m_employer = MEmployerModel::where('employer_id', $employer_id)->first();
+        
+		if(is_null($m_employer)){
+			$m_employer = new MEmployerModel;
+
+			$m_employer->employer_id = 0;
+
+		}
+
+		$employer_categories = MSubKindModel::GetData(1);
+		
+		return view('Manager.Screen.Master.MEmployer.entry', compact('m_employer',"employer_categories"));
 
 
 	}
