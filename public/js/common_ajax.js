@@ -1,7 +1,7 @@
 
-function searchPostCodeForAddress(address) {
+function searchPostalCodeForAddress(address) {
 	return $.ajax({
-	  url: Routes.searchPostCode,
+	  url: Routes.searcPostalCode,
 	  type: 'post',
 	  dataType: 'json',
 	  data: { address: address },
@@ -12,12 +12,12 @@ function searchPostCodeForAddress(address) {
 }
 
 
-function searchAddressForPostCode(post_code) {
+function searchAddressForPostCode(postal_code) {
 	return $.ajax({
 	  url: Routes.searchAddress,
 	  type: 'post',
 	  dataType: 'json',
-	  data: { post_code: post_code },
+	  data: { postal_code: postal_code },
 	  headers: {
 		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 	  }

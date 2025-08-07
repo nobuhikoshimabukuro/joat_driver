@@ -40,7 +40,7 @@ function clear_error_message(target){
 }
 
 
-function standby_processing(process_branch ,button ,target = 'body'){
+function StandbyProcessing(process_branch ,button ,target = 'body'){
 
   if(process_branch == 1){
 
@@ -103,7 +103,7 @@ function set_session_transition(button) {
   var session_key = button.data('session_key');
   var session_value = button.data('session_value'); 
 
-  standby_processing(1 , button);
+  StandbyProcessing(1 , button);
   $.ajax({
       url: set_session_url, // 送信先
       type: 'get',
@@ -113,13 +113,13 @@ function set_session_transition(button) {
   })
   .done(function (data, textStatus, jqXHR) {
 
-    standby_processing(2 , button);
+    StandbyProcessing(2 , button);
     window.location.href = transition_url;
 
   })
   .fail(function (data, textStatus, errorThrown) {
      
-    standby_processing(2 , button);
+    StandbyProcessing(2 , button);
     window.location.href = transition_url;
 
   });
@@ -140,7 +140,7 @@ $(document).on("click", ".common-search-button", function (e) {
 
   var button = $(this);
 
-  standby_processing(1,button,"body");
+  StandbyProcessing(1,button,"body");
 
   var add_url = "";
 
@@ -190,7 +190,7 @@ $(document).on("click", ".common-search-button", function (e) {
   });
 
 
-  standby_processing(2,button,"body");
+  StandbyProcessing(2,button,"body");
 
   var current_url = window.location.href;
 
@@ -399,194 +399,9 @@ function show_login_again_modal() {
 }
 
 
-// 郵便番号検索の共通関数
-async function searchAndFillAddress(postCodeInput, addressFields) {
-  // バリデーション: 郵便番号の入力チェック
-  postCodeInput.removeClass('is-invalid');
-  var post_code = postCodeInput.val();
-
-  if (post_code === "") {
-      postCodeInput.addClass('is-invalid');
-      return;
-  }
-
-  try {
-      var address_info = await search_address_api(post_code);
-
-      if (address_info.address1) {
-          var fullAddress = address_info.address1 + address_info.address2 + address_info.address3;
-
-          // 現在の入力値を取得
-          var currentAddress = $(addressFields.address1).val();
-
-          // 既に住所が入力されている場合、上書き確認
-          if (currentAddress) {
-              var userConfirmed = confirm("住所項目が入力されています。\n上書きしてもよろしいですか？");
-              if (!userConfirmed) {
-                  return; // キャンセルなら処理を中断
-              }
-          }
-
-          // 住所を入力
-          $(addressFields.address1).val(fullAddress);
-      } else {
-          console.log("住所が見つかりませんでした");
-      }
-
-  } catch (error) {
-      console.error("APIリクエストエラー:", error);
-  }
-}
 
 
 
-
-
-/**************************
-  住所取得後表示処理
-  post_code(検索する郵便番号)    
-***************************/
-function search_address_api(post_code) {
-  
-  return new Promise((resolve, reject) => {
-      // ハイフンを除去
-      post_code = post_code.replace(/-/g, '');
-
-      // 数字のみ & 7桁かチェック
-      if (!/^\d{7}$/.test(post_code)) {
-          resolve([]); // 条件を満たさない場合は空配列を返す
-          return;
-      }
-
-      var parameter = { zipcode: post_code };
-      var zipcloud_url = "https://zipcloud.ibsnet.co.jp/api/search";
-
-      $.ajax({
-          type: "GET",
-          cache: false,
-          data: parameter,
-          url: zipcloud_url,
-          dataType: "jsonp",
-          success: function (retur_value) {
-
-              if (retur_value.status === 200 && retur_value.results !== null) {
-                  resolve(retur_value.results[0]); // 最初の住所データを返す
-              } else {
-                  resolve([]); // 住所が見つからなかった場合
-              }
-
-          },
-          error: function () {
-              reject("APIリクエストエラー");
-          }
-      });
-  });
-}
-
-
-
-
-
-/**
- * 指定された料金表テーブル（jQueryオブジェクト）から、全体のpayloadデータを生成する共通関数
- * @param {jQuery} $table - 対象の料金表テーブル（例：$('#input-table')）
- * @returns {Object} payload - サーバーに送信可能なデータ構造
- */
-const getPriceTablePayload = ($table) => {
-  // 共通関数：カンマを除去し、数値に変換（空文字はそのまま返す）
-  const parseVal = (val) => val === '' ? '' : parseFloat(val.replace(/,/g, ''));
-
-  /**
-   * 重量 or 距離の「範囲データ（from/to）」を抽出
-   * @param {jQuery} $targets - 対象の <th> 要素群（距離行 or 重量列）
-   * @param {Array} keys - プロパティ名（例：['distance_f', 'distance_t']）
-   * @returns {Array} 範囲オブジェクトの配列
-   */
-  const extractRanges = ($targets, keys) => {
-      return $targets.map(function () {
-          const inputs = $(this).find('input');
-          return {
-              [keys[0]]: parseVal($(inputs[0]).val()),
-              [keys[1]]: parseVal($(inputs[1]).val())
-          };
-      }).get();
-  };
-
-  /**
-   * 価格データを row/col 単位で抽出
-   * @param {string} field - 対象の data-field 属性（price_normal / price_terminal）
-   * @returns {Array} 価格オブジェクトの配列（row, col付き）
-   */
-  const extractPrices = (field) => {
-      const result = [];
-      $table.find('tbody tr').each(function (rowIndex) {
-          $(this).find('td').each(function (colIndex) {
-              const val = $(this).find(`input[data-field="${field}"]`).val();
-              result.push({
-                  row: rowIndex,
-                  col: colIndex,
-                  [field]: parseVal(val)
-              });
-          });
-      });
-      return result;
-  };
-
-  // 重量（横軸）：先頭2列を除いたヘッダー<th>を取得
-  const weightThs = $table.find('thead tr.first_header th:gt(1)');
-
-  // 距離（縦軸）：すべての<tr>行を取得
-  const $distanceRows = $table.find('tbody tr');
-
-  // 区域：行ごとの2番目の<th>から取得
-  const area_ranges = $distanceRows.map(function () {
-      const area = $(this).find('th').eq(1).find('input').val();
-      return { area };
-  }).get();
-
-  // 明細データ：全距離 × 全重量セルの金額・範囲をまとめる
-  const meisai_data = [];
-  $distanceRows.each(function (rowIndex) {
-      const $th = $(this).find('th');
-      const distance_f = $th.find('input').eq(0).val();
-      const distance_t = $th.find('input').eq(1).val();
-      const area = $th.eq(1).find('input').val();
-
-      weightThs.each(function (colIndex) {
-          const weightInputs = $(this).find('input');
-          const weight_f = $(weightInputs[0]).val();
-          const weight_t = $(weightInputs[1]).val();
-
-          // 対応する金額セル（td）を取得
-          const $td = $table.find('tbody tr').eq(rowIndex).find('td').eq(colIndex);
-
-          meisai_data.push({
-              distance_f, distance_t, area,
-              weight_f, weight_t,
-              price_normal: $td.find('input[data-field="price_normal"]').val(),
-              price_terminal: $td.find('input[data-field="price_terminal"]').val()
-          });
-      });
-  });
-
-  // カスタム情報（テーブル外部の基本情報フォーム）
-  const price_custom_info_data = {
-      price_custom_cd: $('#price_custom_cd').val(),
-      price_custom_name: $('#price_custom_name').val(),
-      remarks: $('#remarks').val()
-  };
-
-  // 最終的な payload オブジェクトを返却
-  return {
-      price_custom_info_data,
-      meisai_data,
-      weight_ranges: extractRanges(weightThs, ['weight_f', 'weight_t']),
-      distance_ranges: extractRanges($distanceRows, ['distance_f', 'distance_t']),
-      area_ranges,
-      price_normal_ranges: extractPrices('price_normal'),
-      price_terminal_ranges: extractPrices('price_terminal')
-  };
-};
 
 // FSI.Nguyen 20250604 作成 試験中。検索項目内で、最後のフィールドでエンターおされたら、検索ボタンを疑似クリックする
 // これにより、ユーザーが検索ボタンをクリックせずにエンターキーで検索を実行できるようになります。
@@ -607,20 +422,3 @@ $(document).ready(function() {
       }
   });
 });
-
-// 2025/06/25
-// 郵便番号入力
-$(document).on({
-  // フォーカス時
-  focus: function () {
-      let zip = $(this).val().replace(/-/g, '');
-      $(this).val(zip);
-  },
-  // フォーカスアウト時
-  blur: function () {
-      let zip = $(this).val().replace(/[^0-9]/g, '');
-      if (zip.length === 7) {
-          $(this).val(zip.slice(0, 3) + '-' + zip.slice(3));
-      }
-  }
-}, ".post_number");

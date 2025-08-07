@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $csvFilename = "KEN_ALL.CSV";
-        DbCommon::SaveMAddress($csvFilename, true);
+        DbCommon::SaveMAddress([], true);
 
         DB::table('m_japanese_era')->insert([
 

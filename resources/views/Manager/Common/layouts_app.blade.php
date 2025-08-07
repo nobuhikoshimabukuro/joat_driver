@@ -172,8 +172,22 @@
     <script src="{{ asset('js/bootstrap53/bootstrap.js') . $system_version }}"></script>
     <script src="{{ asset('js/fontawesome.js') . $system_version }}"></script>
     <script src="{{ asset('js/common.js') . $system_version }}"></script>
+    <script src="{{ asset('js/common_ajax.js') . $system_version }}"></script>
     <script src="{{ asset('employer/js/dashboard.js') . $system_version }}"></script>
 
+    <script>
+      const Routes = {
+          searcPostalCode: "{{ route('search_postal_code_for_address') }}",
+          searchAddress: "{{ route('search_address_for_postal_code') }}",
+          
+      };
+    </script>
+    
     @yield('pagejs')
+
+
+    
+
+
   </body>
 </html>

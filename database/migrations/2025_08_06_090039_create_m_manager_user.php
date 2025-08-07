@@ -19,13 +19,12 @@ return new class extends Migration
         Schema::create('m_manager_user', function (Blueprint $table) {
 
             $table
-                ->bigIncrements('id')
-                ->comment('連番');
-            
-
+                ->bigIncrements('manager_user_id')
+                ->comment('管理側ユーザーID:連番');  
+                
             $table
-                ->string('user_cd', 30)
-                ->comment('ユーザーCD:ログイン時に入力※変更可能');
+                ->bigInteger('manager_id')
+                ->comment('管理側ID');            
 
             $table
                 ->integer('permission')
@@ -104,7 +103,7 @@ return new class extends Migration
                 ->nullable()
                 ->comment('削除者');
         });
-        DB::statement("ALTER TABLE m_manager_user COMMENT '管理ユーザーマスタ'");
+        DB::statement("ALTER TABLE m_manager_user COMMENT '管理側ユーザーマスタ'");
     }
 
     /**

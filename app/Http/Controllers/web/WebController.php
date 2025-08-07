@@ -12,4 +12,7 @@ class WebController extends Controller
         $demo = "";
 		return view('web.screen.index', compact('demo'));
 	}
+
+
+	
 }

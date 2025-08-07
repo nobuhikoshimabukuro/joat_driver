@@ -30,7 +30,7 @@ return new class extends Migration
             $table
                 ->string('corporate_number', 30)                
                 ->nullable()
-                ->comment('法人番号');
+                ->comment('法人番号:求人元区分が法人時は必須');
 
             $table
                 ->string('employer_cd', 30)
@@ -65,35 +65,33 @@ return new class extends Migration
                 ->nullable()
                 ->comment('住所3');
 
-            $table
-                ->string('mailaddress1', 1000)
-                ->nullable()
-                ->comment('メールアドレス1');
+
 
             $table
-                ->string('mailaddress2', 1000)
-                ->nullable()
-                ->comment('メールアドレス2');
-
-            $table
-                ->string('tel1', 15)
+                ->string('tel1', 20)
                 ->nullable()
                 ->comment('電話番号1');
 
             $table
-                ->string('tel2', 15)
+                ->string('tel2', 20)
                 ->nullable()
                 ->comment('電話番号2');
 
             $table
-                ->string('fax1', 15)
+                ->string('fax1', 20)
                 ->nullable()
                 ->comment('FAX1');
 
             $table
-                ->string('fax2', 15)
+                ->string('fax2', 20)
                 ->nullable()
                 ->comment('FAX2');
+
+            $table
+                ->string('mailaddress', 1000)
+                ->nullable()
+                ->comment('メールアドレス');
+            
 
             $table
                 ->text('remarks')
