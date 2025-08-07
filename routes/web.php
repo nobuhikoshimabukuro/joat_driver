@@ -13,6 +13,7 @@ require __DIR__.'/user.php';
 require __DIR__.'/manager.php';
 
 
+
 Route::get('/', [WebController::class, 'index'])->name('web.index');
 
 Route::get('/test', [MLicenseController::class, 'index'])->name('manager.master.m_employer');
