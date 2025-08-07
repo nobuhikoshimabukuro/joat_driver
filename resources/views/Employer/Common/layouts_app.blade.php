@@ -53,8 +53,7 @@
             flex: 1;
             display: flex;
             flex-direction: row;
-            overflow: hidden;
-            min-height: calc(100vh - 56px); /* ← headerの高さを減算 */
+            overflow: hidden;            
             }
 
       

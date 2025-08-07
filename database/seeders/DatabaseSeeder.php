@@ -95,5 +95,20 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
 
+
+
+        $insertData = [];
+
+        for ($i = 1; $i <= 50; $i++) {
+            $insertData[] = [                
+                'license_name' => 'テスト' . $i,
+                'license_name_kana' => 'テスト',
+                'display_order' => $i,
+            ];
+        }
+        
+        DB::table('m_license')->insert($insertData);
+
+
     }
 }

@@ -37,6 +37,20 @@ $breadcrumbs = [
         'url' => route('manager.master.m_employer_user'),
     ],
 
+    [
+        'parent' => 'manager.dashboard',
+        'name' => 'manager.master.m_license',
+        'label' => '資格/免許情報一覧',
+        'url' => route('manager.master.m_license'),
+    ],
+
+
+    [
+        'parent' => 'manager.master.m_license',
+        'name' => 'manager.master.m_license.entry',
+        'label' => '資格/免許情報編集',
+        'url' => route('manager.master.m_license.entry'),
+    ],
 
     // 利用会社start
     // ダッシュボード

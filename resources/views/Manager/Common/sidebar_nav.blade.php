@@ -1,7 +1,8 @@
 @php
 $masterSubMenu = [
     (object)["href" => route('manager.master.m_employer'), "title" => "求人元マスタ", "icon" => "fas fa-building"],
-    (object)["href" => route('manager.master.m_employer_user'), "title" => "求人元ユーザーマスタ", "icon" => "fas fa-user"]
+    (object)["href" => route('manager.master.m_employer_user'), "title" => "求人元ユーザーマスタ", "icon" => "fas fa-user"],
+    (object)["href" => route('manager.master.m_license'), "title" => "資格/免許マスタ", "icon" => "fas fa-user"],
 ];
 @endphp
 

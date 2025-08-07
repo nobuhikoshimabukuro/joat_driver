@@ -11,93 +11,29 @@
 
     <title>@yield('title')</title>
     @yield('pagehead')
-
     <!-- CSS -->
     <link href="{{ asset('css/bootstrap53/bootstrap.css') . $system_version }}" rel="stylesheet" />
     <link href="{{ asset('css/bootstrap53/bootstrap-icons.css') . $system_version }}" rel="stylesheet" />
-    <link href="{{ asset('css/width.css') . $system_version }}" rel="stylesheet" />
+    <link href="{{ asset('css/width.css') . $system_version }}" rel="stylesheet" />    
+    <link href="{{ asset('manager/css/style.css') . $system_version }}" rel="stylesheet" />
+    <link href="{{ asset('manager/css/original_dashboard.css') . $system_version }}" rel="stylesheet" />
+    <link href="{{ asset('manager/css/dashboard.css') . $system_version }}" rel="stylesheet" />
+    <link href="{{ asset('manager/css/dashboard.rtl.css') . $system_version }}" rel="stylesheet" />    
     
-    <link href="{{ asset('employer/css/style.css') . $system_version }}" rel="stylesheet" />
-    <link href="{{ asset('employer/css/dashboard.css') . $system_version }}" rel="stylesheet" />
-    <link href="{{ asset('employer/css/dashboard.rtl.css') . $system_version }}" rel="stylesheet" />
-
     @yield('pagestyle')
 
-    <style>
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-      }
-
-      body {
-        display: flex;
-        flex-direction: column;
-      }
-
-      header.navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 56px;
-        z-index: 1030;
-      }
-
-      .container-fluid {
-        flex: 1;
-        margin-top: 56px;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .dashboard-body {
-        flex: 1;
-        display: flex;
-        flex-direction: row;
-        overflow: hidden;
-        min-height: calc(100vh - 56px);
-      }
-
-      /* サイドバーは768px以上で表示 */
-      .dashboard-sidebar {
-        width: 250px;
-        min-width: 250px;
-        max-width: 300px;
-        overflow-y: auto;
-        display: none;
-      }
-
-      @media (min-width: 768px) {       
-        .dashboard-sidebar {
-          display: block;
-        }
-      }
-
-      .dashboard-main {
-        flex: 1;
-        overflow-y: auto;
-        padding: 1rem;
-      }
-
-      /* 768px未満のときのメニュー（ボタン）表示 */
-      .menu-toggle-button {
-        display: none;
-      }
-
-      @media (max-width: 767.98px) {
-        .menu-toggle-button {
-          display: block;
-        }
-
-        .hide-under-md {
-          display: none !important;
-        }
-      }
+    <style>      
     </style>
+
   </head>
 
   <body>
+
+    <div class="loader-area">
+        <div class="loader">
+        </div>
+    </div>
+
     <!-- ヘッダー -->
     <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
       <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">Company name</a>
@@ -144,8 +80,7 @@
 
         <!-- 768px以上は常時表示 -->
         <nav
-          class="dashboard-sidebar sidebar border-end col-md-3 col-lg-2 p-0 bg-body-tertiary d-none d-md-block"
-          style="height: calc(100vh - 56px);"
+          class="dashboard-sidebar sidebar border-end col-md-3 col-lg-2 p-0 bg-body-tertiary d-none d-md-block"          
         >
           <!-- ナビ部分を共通化して読み込み -->
           @include('Manager.Common.sidebar_nav')
@@ -172,10 +107,35 @@
     <script src="{{ asset('js/bootstrap53/bootstrap.js') . $system_version }}"></script>
     <script src="{{ asset('js/fontawesome.js') . $system_version }}"></script>
     <script src="{{ asset('js/common.js') . $system_version }}"></script>
-    <script src="{{ asset('js/common_ajax.js') . $system_version }}"></script>
-    <script src="{{ asset('employer/js/dashboard.js') . $system_version }}"></script>
+    <script src="{{ asset('js/common_ajax.js') . $system_version }}"></script>    
 
     <script>
+
+      $(function(){
+
+        const targetId = @json(session('target_row_id'));
+        
+        if (targetId) {
+            
+          const targetRow = document.querySelector(`[data-target_row="${targetId}"]`);
+            
+          if (targetRow) {
+
+                targetRow.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });                
+          }
+
+        }
+
+
+        setTimeout(function(){
+            end_loader();
+        }, 1000);
+
+      });
+
       const Routes = {
           searcPostalCode: "{{ route('search_postal_code_for_address') }}",
           searchAddress: "{{ route('search_address_for_postal_code') }}",

@@ -6,6 +6,7 @@ use App\Http\Controllers\Manager\ManagerController;
 
 use App\Http\Controllers\Manager\Master\MEmployerController;
 use App\Http\Controllers\Manager\Master\MEmployerUserController;
+use App\Http\Controllers\Manager\Master\MLicenseController;
 
 
 
@@ -18,6 +19,11 @@ Route::prefix('manager')->group(function () {
     Route::get('/master/m_employer', [MEmployerController::class, 'index'])->name('manager.master.m_employer');
     Route::get('/master/m_employer/entry', [MEmployerController::class, 'entry'])->name('manager.master.m_employer.entry');
     Route::post('/master/m_employer/save', [MEmployerController::class, 'save'])->name('manager.master.m_employer.save');
+
+
+    Route::get('/master/m_license', [MLicenseController::class, 'index'])->name('manager.master.m_license');
+    Route::get('/master/m_license/entry', [MLicenseController::class, 'entry'])->name('manager.master.m_license.entry');
+    Route::post('/master/m_license/save', [MLicenseController::class, 'save'])->name('manager.master.m_license.save');
 
 
     Route::get('/master/m_employer_user', [MEmployerUserController::class, 'index'])->name('manager.master.m_employer_user');
