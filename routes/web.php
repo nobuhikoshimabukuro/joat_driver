@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\web\WebController;
 
-use App\Http\Controllers\Manager\ManagerController;
+use App\Http\Controllers\Manager\Master\MLicenseController;
+
 
 use App\Original\CommonAjax;
 
@@ -13,6 +14,9 @@ require __DIR__.'/manager.php';
 
 
 Route::get('/', [WebController::class, 'index'])->name('web.index');
+
+Route::get('/test', [MLicenseController::class, 'index'])->name('manager.master.m_employer');
+
 
 Route::get('/m', function () {
     return redirect(route('manager.index'));
