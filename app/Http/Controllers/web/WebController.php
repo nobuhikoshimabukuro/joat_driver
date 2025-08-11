@@ -10,7 +10,7 @@ class WebController extends Controller
     function index(Request $request)
 	{	
         $demo = "";
-		return view('web.screen.index', compact('demo'));
+		return view('Web.Screen.index', compact('demo'));
 	}
 
 
