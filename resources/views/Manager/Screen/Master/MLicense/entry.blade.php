@@ -4,7 +4,7 @@
 
 
 @section('pagestyle')
-<!-- 画面別CSS3 -->
+<!-- 画面別CSS -->
 <style>  
 
   .form-area label{

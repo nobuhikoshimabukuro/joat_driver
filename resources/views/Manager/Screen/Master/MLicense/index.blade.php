@@ -4,8 +4,25 @@
 
 
 @section('pagestyle')
-<!-- 画面別CSS4 -->
+<!-- 画面別CSS -->
 <style>  
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table-fixed-header thead th {
+  position: sticky;
+  top: 0;
+  background: white; /* 背景を指定しないとスクロールで透ける */
+  z-index: 2;
+}
+
+.table-nowrap th,
+.table-nowrap td {
+  white-space: nowrap; /* 折り返し禁止 */
+}
+
 </style>
 @endsection
 
@@ -26,65 +43,43 @@
   $TextClassIndex = 0;
 @endphp
 
-<table class="table table-hover">
-  <tr>
-    <th class="w-140px {{$TextClass[$TextClassIndex++]}}">
-      <button class="btn btn-outline-primary page-transition-button mb-2"                                
-      data-url="{{route('manager.master.m_license.entry')}}"
-      data-process="1"
-      >新規登録</button>
-    </th>
+<div class="table-responsive">
+  <table class="table table-hover table-fixed-header table-nowrap">
+    <thead>
+      <tr>
+        <th class="w-140px {{$TextClass[$TextClassIndex++]}}">
+          <button class="btn btn-outline-primary page-transition-button mb-2"
+            data-url="{{route('manager.master.m_license.entry')}}"
+            data-process="1">新規登録</button>
+        </th>
+        <th class="w-150px {{$TextClass[$TextClassIndex++]}}">資格・免許ID</th>
+        <th class="{{$TextClass[$TextClassIndex++]}}">資格・免許名</th>
+        <th class="{{$TextClass[$TextClassIndex++]}}">備考</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach ($m_license as $item)
+        @php $TextClassIndex = 0; @endphp
+        <tr data-target_row="{{$item->license_id}}">
+          <td class="{{$TextClass[$TextClassIndex++]}}">
+            <button class="btn btn-outline-primary page-transition-button mb-2"
+              data-url="{{route('manager.master.m_license.entry')}}?license_id={{$item->license_id }}"
+              data-process="1">編集</button>
+          </td>
+          <td class="{{$TextClass[$TextClassIndex++]}}">{{ $item->license_id }}</td>
+          <td class="{{$TextClass[$TextClassIndex++]}}">
+            <ruby>
+              {{ $item->license_name }}
+              <rt>{{ $item->license_name_kana }}</rt>
+            </ruby>
+          </td>
+          <td class="{{$TextClass[$TextClassIndex++]}}">{!! nl2br(e($item->remarks)) !!}</td>
+        </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
 
-    <th class="w-150px {{$TextClass[$TextClassIndex++]}}">
-      資格・免許ID
-    </th>
-
-    <th class="{{$TextClass[$TextClassIndex++]}}">
-      資格・免許名
-    </th>    
-
-    <th class="{{$TextClass[$TextClassIndex++]}}">
-      備考
-    </th>    
-
-  </tr>
-
-
-
-
-  @foreach ($m_license as $item)
-
-    @php 
-      $TextClassIndex = 0;
-    @endphp
-
-    <tr data-target_row="{{$item->license_id }}">
-      <td class="{{$TextClass[$TextClassIndex++]}}">
-        <button class="btn btn-outline-primary page-transition-button mb-2"                                
-        data-url="{{route('manager.master.m_license.entry')}}?license_id={{$item->license_id }}"
-        data-process="1"
-        >編集</button>
-      </td>
-
-      <td class="{{$TextClass[$TextClassIndex++]}}">
-        {{ $item->license_id }} 
-      </td>
-
-      <td class="{{$TextClass[$TextClassIndex++]}}">
-        <ruby>
-          {{ $item->license_name }}
-          <rt>{{ $item->license_name_kana }}</rt>
-        </ruby>
-      </td>
-
-      <td class="{{$TextClass[$TextClassIndex++]}}">
-        {!! nl2br(e($item->remarks)) !!}
-      </td>
-      
-    </tr>
-  @endforeach
-
-</table>
 
 
 @endsection

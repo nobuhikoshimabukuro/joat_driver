@@ -4,7 +4,7 @@
 
 
 @section('pagestyle')
-<!-- 画面別CSS1 -->
+<!-- 画面別CSS -->
 <style>  
 </style>
 @endsection
