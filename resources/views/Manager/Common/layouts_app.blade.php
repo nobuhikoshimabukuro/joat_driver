@@ -133,7 +133,7 @@
 
 
         setTimeout(function(){
-            end_loader();
+            EndLoader();
         }, 1000);
 
       });

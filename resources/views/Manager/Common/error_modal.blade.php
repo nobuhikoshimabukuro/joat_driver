@@ -1,3 +1,7 @@
+<style>
+
+</style>
+
 {{-- エラーモーダル--}}
 <div class="modal fade" id="error-modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="error-modal-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -10,7 +14,8 @@
 
             <div class="modal-body">
                 <div class="col-12">
-                    <div class="error_message_area"></div>                
+                    <div class="error_message_area">
+                    </div>
                 </div>
                 
             </div>

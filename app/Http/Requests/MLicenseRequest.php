@@ -53,6 +53,11 @@ class MLicenseRequest extends FormRequest
 	{
 		$validator->after(function ($validator) {
 
+            if(1 == 1){
+
+            }else{
+                $validator->errors()->add("login_again", '');
+            }
 			
 		});
 	}

@@ -1,19 +1,4 @@
-// 引数は操作制御したいセレクタ
-function start_loader(target){
-
-  // 処理中のローディングcss
-  let Html = '<div class="loader-area">';
-  Html += '<div class="loader"></div>';
-  Html += '</div>'; 
-
-  // 対象要素に作成したhtmlを追加
-  $(Html).appendTo(target); 
-
-}
-
-
-
-function end_loader() {
+function EndLoader() {
 
   var elements = document.querySelectorAll('.loader-area');
 
@@ -124,6 +109,9 @@ function set_session_transition(button) {
 
   });
 }
+
+
+
 
 //モーダルを開いた時の共通イベント
 $('.modal').on('show.bs.modal',function(e){  
@@ -338,56 +326,75 @@ function fullToHalf(input) {
 
 
 
-// モーダルが開いたら、モーダル内の入力項目にフォーカスを当てる。
-$(document).ready(function() {
-  $('#save-modal').on('shown.bs.modal', function () {
-    let modal = $(this);
 
-    // 非同期で aria-hidden を削除
-    setTimeout(() => {
-      modal.removeAttr('aria-hidden');
-    }, 10);
+function ErrorClear(buttonName , targetArea ) {
+  
+  $('is-invalid').removeClass('is-invalid');
 
-    let targets = modal.find('input:visible:not(:disabled):not(.original-readonly), select:visible:not(:disabled):not(.original-readonly), textarea:visible:not(:disabled):not(.original-readonly)');
+  if(buttonName != ""){
+    $(buttonName).removeClass('d-none');
+  }
 
-    let target = null;
+  if(targetArea != ""){
+    $(targetArea).empty();
+  }  
+}
 
-    targets.each(function () {
-        let current = $(this);
-        if (current.closest('.d-none').length === 0) {
-            target = current;
-            return false; // ループを抜ける
-        }
-    });
 
-    if (target) {
-        if (target.is(":checkbox")) {
-            setTimeout(() => target.focus(), 0);
-        } else {
-            target.focus();
-        }
-    }
-  });
-});
+function AddInvalid(ErrorElement) {
+  
+  // IDがあるか確認
+  if ($(`#${ErrorElement}`).length > 0) {
+      $(`#${ErrorElement}`).addClass('is-invalid');
+  }
+  // IDが無くて name がある場合
+  else if ($(`[name="${ErrorElement}"]`).length > 0) {
+      $(`[name="${ErrorElement}"]`).addClass('is-invalid');
+  }
+  
+}
 
-//インフォメーションモーダル表示
-function show_login_info_modal(message) {
-
+function ShowErrorModal(element , target = "") {
+  
   // すべてのモーダルを非表示にする
   $(".modal").modal('hide');
-
-  // メッセージを表示するエリアにメッセージをセット
-  $(".info_message_area").html(message);
   
-   // 再ログインモーダルを表示する
-  $("#info-modal").modal('show');
+  // メッセージを表示する要素追加
+  if(target != ""){
+    $(element).appendTo(target);
+  }   
+   // エラーモーダルを表示する
+  $("#error-modal").modal('show');
 
   
 }
 
+$(document).on("click", ".error_focus_button", function (e) {
+
+  $("#error-modal").modal('hide');
+
+  let button = $(this);
+  var target = button.data('target');
+
+  if ($(`#${target}`).length > 0) {
+      $(`#${target}`).focus();
+  } else if ($(`[name="${target}"]`).length > 0) {
+      $(`[name="${target}"]`).focus();
+  }
+
+  
+});
+
+
+$(document).on("click", ".error_confirmation_button", function (e) {
+
+  $("#error-modal").modal('show');
+  
+});
+
 
 //session切れ場合に再ログインを促すモーダル表示
-function show_login_again_modal() {
+function ShowLoginAgainModal() {
 
   // すべてのモーダルを非表示にする
   $(".modal").modal('hide');
@@ -401,24 +408,3 @@ function show_login_again_modal() {
 
 
 
-
-
-// FSI.Nguyen 20250604 作成 試験中。検索項目内で、最後のフィールドでエンターおされたら、検索ボタンを疑似クリックする
-// これにより、ユーザーが検索ボタンをクリックせずにエンターキーで検索を実行できるようになります。
-$(document).ready(function() {
-  // 見えているinputフィールドとselectフィールドを探し、最後のものを取得
-  $('.search-area .search-table input:visible, .search-area .search-table select:visible').last().on('keydown', function(event) {
-      if (event.key === 'Enter') {
-          // エンターキーが押されたinputまたはselect要素
-          var inputField = $(this);
-
-          // 最後のinput/select要素が含まれるtr要素を親として、最も近い検索ボタンを選択
-          var closestButton = inputField.closest('tr').find('.common-search-button');
-
-          // 検索ボタンが見つかった場合にクリック
-          if (closestButton.length) {
-              closestButton.click();
-          }
-      }
-  });
-});

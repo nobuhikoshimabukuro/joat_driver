@@ -26,6 +26,7 @@
 @section('content')  
 
 <button id="save-button" class="btn btn-outline-primary">登録</button>
+<button type="button" class="btn btn-outline-danger error_confirmation_button d-none">error</button>
 <form id='save-form' class="form-area" action="{{ route('manager.master.m_license.save') }}" method="post" enctype="multipart/form-data">
   @csrf
 
@@ -56,7 +57,7 @@
 
         <label for="display_order" class="form-label">表示順</label>
         <input type="text" id="display_order" name="display_order"
-        class="form-control w-100px" 
+        class="form-control w-70px text-end" 
         value="{{$m_license->display_order}}"        
         maxlength="3"
         >     
@@ -83,6 +84,9 @@
 </form>
 
 
+@include('Manager.Common.error_modal')
+@include('Manager.Common.login_again_modal')
+
 @endsection
 @section('pagejs')  
 <script type="text/javascript">
@@ -90,14 +94,21 @@ $(document).ready(function () {
 
  
 
+  var ErrorModalTarget = ".error_message_area";
+
   $(document).on("click", "#save-button", function (e) {
 
     e.preventDefault();
     var button = $(this);
     let f = $('#save-form');    
-    StandbyProcessing(1,button,"body");
-    has_error_flg = false;
+    StandbyProcessing(1,button,"body");  
 
+    ErrorClear(".error_confirmation_button",ErrorModalTarget);
+
+    var errorsHtml = "";
+    var LoginAgainFlg = false;
+    var ErrorFlg = false;    
+    
     
     $.ajax({
         url: f.prop('action'), // 送信先
@@ -115,44 +126,49 @@ $(document).ready(function () {
           window.location.href = url;
 
         } else{
-
+          
+          errorsHtml += `<p>${result_array["message"]}</p>`;
+          ErrorFlg = true;
            
         }    
 
     })
     .fail(function (data, textStatus, errorThrown) {
 
-        has_error_flg = true;
-
-        errorsHtml = '<div class="alert alert-danger text-left">';
+        ErrorFlg = true;      
+        
 
         if (data.status == '422') {
-
-            var errorsHtml = "";
+            
             $.each(data.responseJSON.errors, function(key, value) {
                 
+              if (key === 'login_again') {
+                LoginAgainFlg = true;
+                // {{-- ループ抜け --}}
+                return false;
+              }
 
               if (key === 'postal_code') {
-                $(`[name="postal_code_front"]`).addClass('is-invalid');
-                $(`[name="postal_code_back"]`).addClass('is-invalid');
+
+                AddInvalid("postal_code_front");
+                AddInvalid("postal_code_back");                
+
               }else{
-                $(`[name="${key}"]`).addClass('is-invalid');
+
+                AddInvalid(key);
               }              
 
-               // {{-- errors を取得しメッセージを設定 --}}
-               errorsHtml += `<li>${value[0]}</li>`;
+              // {{-- errors を取得しメッセージを設定 --}}
+              errorsHtml += `<button class="btn error_focus_button" data-target="${key}">${value[0]}</button>`; 
 
-                
-            });
+            });   
 
 
         } else {
 
-            errorsHtml += '<li>Processing Error</li>';
-            errorsHtml += `<li>${data.status}: ${errorThrown}</li>`;              
-        }
-        
-        errorsHtml += '</div>';              
+            errorsHtml += '<p>Processing Error</p>';
+            errorsHtml += `<p>${data.status}: ${errorThrown}</p>`;              
+        }        
 
     })
     // 通信終了後
@@ -160,15 +176,16 @@ $(document).ready(function () {
 
         StandbyProcessing(2,button);
 
-        if(has_error_flg){
-
-            if(data.responseJSON && data.responseJSON.errors && data.responseJSON.errors.hasOwnProperty('login_again')){                
-
-            }else{               
-               
-            }
-
+        if(LoginAgainFlg){
+          ShowLoginAgainModal();
+          return false;
         }
+
+        if(ErrorFlg){
+          ShowErrorModal(errorsHtml , ErrorModalTarget);
+          return false;
+        }
+
     });
 
   });
