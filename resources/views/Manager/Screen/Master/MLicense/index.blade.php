@@ -1,6 +1,6 @@
 @extends('Manager.Common.layouts_app')
 
-@section('title', '資格/免許情報一覧')
+@section('title', '資格・免許情報一覧')
 
 
 @section('pagestyle')
@@ -23,11 +23,11 @@
     </th>
 
     <th class="w-150px">
-      資格/免許ID
+      資格・免許ID
     </th>
 
     <th>
-      資格/免許名
+      資格・免許名
     </th>    
 
     <th>

@@ -42,8 +42,8 @@ class MLicenseRequest extends FormRequest
     public function attributes()
     {
         return [            
-            'license_name' => '資格/免許名',
-            'license_name_kana' => '資格/免許名_カナ',           
+            'license_name' => '資格・免許名',
+            'license_name_kana' => '資格・免許名_カナ',           
             'remarks' => '備考',            
         ];
     }

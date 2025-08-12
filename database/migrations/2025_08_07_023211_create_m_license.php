@@ -23,12 +23,12 @@ return new class extends Migration
 
             $table
                 ->string('license_name', 100)
-                ->comment('資格/免許名');
+                ->comment('資格・免許名');
 
             $table
                 ->string('license_name_kana', 100)
                 ->nullable()
-                ->comment('資格/免許名_カナ');           
+                ->comment('資格・免許名_カナ');           
                 
             $table
                 ->integer('display_order')
@@ -70,7 +70,7 @@ return new class extends Migration
                 ->nullable()
                 ->comment('削除者');
         });
-        DB::statement("ALTER TABLE m_license COMMENT '資格/免許マスタ'");
+        DB::statement("ALTER TABLE m_license COMMENT '資格・免許マスタ'");
     }
 
     /**

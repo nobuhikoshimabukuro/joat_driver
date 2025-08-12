@@ -42,7 +42,7 @@ if (!app()->runningInConsole()) {
         [
             'parent' => 'manager.dashboard',
             'name' => 'manager.master.m_license',
-            'label' => '資格/免許情報一覧',
+            'label' => '資格・免許情報一覧',
             'url' => route('manager.master.m_license'),
         ],
 
@@ -50,7 +50,7 @@ if (!app()->runningInConsole()) {
         [
             'parent' => 'manager.master.m_license',
             'name' => 'manager.master.m_license.entry',
-            'label' => '資格/免許情報編集',
+            'label' => '資格・免許情報編集',
             'url' => route('manager.master.m_license.entry'),
         ],
 

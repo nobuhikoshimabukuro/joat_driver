@@ -1,6 +1,6 @@
 @extends('Manager.Common.layouts_app')
 
-@section('title', '資格/免許情報編集')
+@section('title', '資格・免許情報編集')
 
 
 @section('pagestyle')
@@ -35,7 +35,7 @@
     <div id="" class="row m-0 p-1">    
       <div class="col-xxl-4 col-xl-4 col-lg-5 col-12 p-1 m-0">
 
-        <label for="license_name" class="form-label">資格/免許名</label>
+        <label for="license_name" class="form-label">資格・免許名</label>
         <input type="text" id="license_name" name="license_name"
         class="form-control" 
         value="{{$m_license->license_name}}"
@@ -45,7 +45,7 @@
 
       <div class="col-xxl-4 col-xl-4 col-lg-5 col-12 p-1 m-0">
 
-          <label for="license_name_kana" class="form-label">資格/免許名カナ</label>
+          <label for="license_name_kana" class="form-label">資格・免許名カナ</label>
           <input type="text" id="license_name_kana" name="license_name_kana"
           class="form-control" 
           value="{{$m_license->license_name_kana}}"        
