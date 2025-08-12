@@ -306,9 +306,11 @@ class DbCommon
                         prefecture_code,
                         municipality_code,
                         town_kana = '' OR town_kana IS NULL,
-                        town_kana
+                        postal_code
                 ");
-                
+
+                $a = MAddressModel::count();
+                $b = MAddressWModel::count();
 
                 if(MAddressModel::count() == MAddressWModel::count()){
                     return true;
