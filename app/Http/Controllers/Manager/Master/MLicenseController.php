@@ -53,7 +53,7 @@ class MLicenseController extends Controller
 
 		}	
 		
-		return view('Manager.Screen.Master.Mlicense.entry', compact('m_license'));
+		return view('Manager.Screen.Master.MLicense.entry', compact('m_license'));
 	}
 
 	function save(MLicenseRequest $request)
