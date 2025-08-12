@@ -998,53 +998,12 @@ class Common
 
 	
 
-	public static function get_android_application_info()
+	public static function test()
 	{
-		// tableから最新情報を取得
-		$t_application_version = t_application_version_model::get_latest_data();
-
-		$application_flg = false;
-		$file_info = [];
-
-		if (!is_null($t_application_version)) {
-			
-			$version = $t_application_version->version;
-			$updated_at = $t_application_version->updated_at;
-
-			// 保存先のディスク
-			$disk = Storage::disk('android_application_save_path');
-
-			// version フォルダのパスを指定
-			$path = $version . '/';
-
-			// ファイル一覧取得（ファイルが存在するか確認）
-			$files = $disk->files($path);
-
-			if(count($files) == 0){
-
-				$application_flg = false;
-
-			}else{
-
-				$application_flg = true;
-
-				// ファイル名取得（バージョンディレクトリ内の1つ目）
-				$file_name = $files[0];
-				
-				// URLを取得
-				$file_url = $file_name ? $disk->url($file_name) : null;
-
-				$file_info = (object)[
-					"file_url"   => $file_url,
-					"file_name"  => $file_name ? basename($file_name) : null,
-					"updated_at"  => $updated_at,
-					"version"    => $version,
-				];
-			}		
-		}
+		
 
 		// QRコード生成用URL
-		$url = route('driver.android_application_download');
+		$url = route('manager.index');
 
 		// QRコード生成
 		$qr_src = QrCode::size(150)
@@ -1053,12 +1012,7 @@ class Common
 			->backgroundColor(255, 255, 255, 0)
 			->generate($url);
 
-		return (object)[
-			'application_flg' => $application_flg,
-			'file_info'       => $file_info,
-			'qr_src'          => $qr_src,
-			'url'             => $url,
-		];
+		return $qr_src;
 	}
 
 
