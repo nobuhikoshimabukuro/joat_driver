@@ -26,7 +26,9 @@ return Application::configure(basePath: dirname(__DIR__))
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'manager.auth' => \App\Http\Middleware\ManagerAuth::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

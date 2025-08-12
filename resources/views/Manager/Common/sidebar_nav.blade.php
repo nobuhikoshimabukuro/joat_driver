@@ -56,8 +56,8 @@ $masterSubMenu = [
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link d-flex align-items-center gap-2" href="#">
-      <i class="fas fa-sign-out-alt"></i> Sign out
+    <a class="nav-link d-flex align-items-center gap-2" href="{{ route('manager.logout') }}">
+      <i class="fas fa-sign-out-alt"></i> ログアウト
     </a>
   </li>
 </ul>

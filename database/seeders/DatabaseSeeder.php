@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Hash;
+
 use App\Original\DbCommon;
 
 class DatabaseSeeder extends Seeder
@@ -92,6 +94,49 @@ class DatabaseSeeder extends Seeder
                 'sub_kind_id' => 2,
                 'sub_kind_name' => '法人',
                 'display_order' => $m_sub_kind_display_order++,
+            ]
+        ]);
+
+
+
+
+
+        DB::table('m_manager_user')->insert([
+            [
+                'user_cd'        => '9999',
+                // 'password'       => Hash::make('999999'),
+                'password'       => '999999',
+                'permission'     => 1,
+                'last_name'      => '管理',
+                'first_name'     => '太郎',
+                'last_name_kana' => 'カンリ',
+                'first_name_kana'=> 'タロウ',
+                'mailaddress'    => 'admin@example.com',
+                'tel'            => '03-1234-5678',
+                'mobile_tel'     => '090-1234-5678',
+                'remarks'        => '初期管理ユーザー',
+                'created_at'     => now(),
+                'created_by'     => 'seeder',
+                'updated_at'     => now(),
+                'updated_by'     => 'seeder',
+            ],
+            [
+                'user_cd'        => '1111',
+                // 'password'       => Hash::make('111111'),
+                'password'       => '111111',
+                'permission'     => 0,
+                'last_name'      => '担当',
+                'first_name'     => '花子',
+                'last_name_kana' => 'タントウ',
+                'first_name_kana'=> 'ハナコ',
+                'mailaddress'    => 'staff@example.com',
+                'tel'            => '06-1111-2222',
+                'mobile_tel'     => '080-1111-2222',
+                'remarks'        => 'スタッフユーザー',
+                'created_at'     => now(),
+                'created_by'     => 'seeder',
+                'updated_at'     => now(),
+                'updated_by'     => 'seeder',
             ]
         ]);
 

@@ -329,7 +329,7 @@ function fullToHalf(input) {
 
 function ErrorClear(buttonName , targetArea ) {
   
-  $('is-invalid').removeClass('is-invalid');
+  $('.is-invalid').removeClass('is-invalid');
 
   if(buttonName != ""){
     $(buttonName).removeClass('d-none');
@@ -376,13 +376,27 @@ $(document).on("click", ".error_focus_button", function (e) {
   let button = $(this);
   var target = button.data('target');
 
-  if ($(`#${target}`).length > 0) {
-      $(`#${target}`).focus();
-  } else if ($(`[name="${target}"]`).length > 0) {
-      $(`[name="${target}"]`).focus();
+  let $targetElement = $(`#${target}`);
+  if ($targetElement.length === 0) {
+    $targetElement = $(`[name="${target}"]`);
   }
 
-  
+  if ($targetElement.length > 0) {
+    // フォーカスを当てる
+    $targetElement.focus();
+
+    // スクロール位置を計算して調整（画面の中心に持ってくる）
+    let elementOffset = $targetElement.offset().top;
+    let elementHeight = $targetElement.outerHeight();
+    let windowHeight = $(window).height();
+
+    // 要素が画面中央にくるようにスクロール位置を計算
+    let scrollTo = elementOffset - (windowHeight / 2) + (elementHeight / 2);
+
+    // スクロールアニメーション（スマホも対応）
+    $('html, body').animate({ scrollTop: scrollTo }, 500);
+  }
+
 });
 
 

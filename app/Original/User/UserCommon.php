@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Original;
+namespace App\Original\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,6 +11,8 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Original\db_common;
+
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\Snappy\Facades\SnappyPdf as SnappyPDF;

@@ -1,26 +1,49 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\Manager\ManagerController;
-
 use App\Http\Controllers\Manager\Master\MEmployerController;
 use App\Http\Controllers\Manager\Master\MEmployerUserController;
 use App\Http\Controllers\Manager\Master\MLicenseController;
 
-
 Route::get('/', [ManagerController::class, 'index'])->name('manager.index');
-  
-Route::get('/dashboard', [ManagerController::class, 'dashboard'])->name('manager.dashboard');  
-Route::get('/master/m_employer', [MEmployerController::class, 'index'])->name('manager.master.m_employer');
-Route::get('/master/m_employer/entry', [MEmployerController::class, 'entry'])->name('manager.master.m_employer.entry');
-Route::post('/master/m_employer/save', [MEmployerController::class, 'save'])->name('manager.master.m_employer.save');
+Route::get('/index', [ManagerController::class, 'index'])->name('manager.index');
 
+Route::get('/login', [ManagerController::class, 'login'])->name('manager.login');
+Route::get('/logout', [ManagerController::class, 'logout'])->name('manager.logout');
+Route::post('/login_check', [ManagerController::class, 'login_check'])->name('manager.login_check');
 
-Route::get('/master/m_license', [MLicenseController::class, 'index'])->name('manager.master.m_license');
-Route::get('/master/m_license/entry', [MLicenseController::class, 'entry'])->name('manager.master.m_license.entry');
-Route::post('/master/m_license/save', [MLicenseController::class, 'save'])->name('manager.master.m_license.save');
+// ダッシュボード
+Route::get('/dashboard', [ManagerController::class, 'dashboard'])
+    ->name('manager.dashboard')
+    ->middleware('manager.auth');
 
+// マスタ管理（事業者）
+Route::get('/master/m_employer', [MEmployerController::class, 'index'])
+    ->name('manager.master.m_employer')
+    ->middleware('manager.auth');
 
-Route::get('/master/m_employer_user', [MEmployerUserController::class, 'index'])->name('manager.master.m_employer_user');
+Route::get('/master/m_employer/entry', [MEmployerController::class, 'entry'])
+    ->name('manager.master.m_employer.entry')
+    ->middleware('manager.auth');
+
+Route::post('/master/m_employer/save', [MEmployerController::class, 'save'])
+    ->name('manager.master.m_employer.save');
     
+
+// マスタ管理（免許）
+Route::get('/master/m_license', [MLicenseController::class, 'index'])
+    ->name('manager.master.m_license')
+    ->middleware('manager.auth');
+
+Route::get('/master/m_license/entry', [MLicenseController::class, 'entry'])
+    ->name('manager.master.m_license.entry')
+    ->middleware('manager.auth');
+
+Route::post('/master/m_license/save', [MLicenseController::class, 'save'])
+    ->name('manager.master.m_license.save');    
+
+// マスタ管理（事業者ユーザー）
+Route::get('/master/m_employer_user', [MEmployerUserController::class, 'index'])
+    ->name('manager.master.m_employer_user')
+    ->middleware('manager.auth');

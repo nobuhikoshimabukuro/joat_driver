@@ -19,12 +19,16 @@ return new class extends Migration
         Schema::create('m_manager_user', function (Blueprint $table) {
 
             $table
-                ->bigIncrements('manager_user_id')
+                ->bigIncrements('user_id')
                 ->comment('管理側ユーザーID:連番');  
                 
             $table
-                ->bigInteger('manager_id')
-                ->comment('管理側ID');            
+                ->string('user_cd', 30)
+                ->comment('ユーザーCD:ログイン時に入力');            
+
+            $table
+                ->string('password', 1000)
+                ->comment('パスワード');      
 
             $table
                 ->integer('permission')

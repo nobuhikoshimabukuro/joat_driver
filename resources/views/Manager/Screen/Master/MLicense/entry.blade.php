@@ -14,11 +14,6 @@
     
   }
 
-  .corporate_number_area
-   {
-    display: none; /* 初期状態で非表示にする */
-  }
-
 </style>
 @endsection
 
@@ -26,7 +21,7 @@
 @section('content')  
 
 <button id="save-button" class="btn btn-outline-primary">登録</button>
-<button type="button" class="btn btn-outline-danger error_confirmation_button d-none">error</button>
+<button type="button" class="btn btn-outline-danger error_confirmation_button d-none">エラー確認</button>
 <form id='save-form' class="form-area" action="{{ route('manager.master.m_license.save') }}" method="post" enctype="multipart/form-data">
   @csrf
 
