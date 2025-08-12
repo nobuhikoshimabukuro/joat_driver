@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\web\WebController;
+use App\Http\Controllers\Web\WebController;
 
 use App\Http\Controllers\Manager\Master\MLicenseController;
 
