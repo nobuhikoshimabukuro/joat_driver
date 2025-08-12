@@ -309,9 +309,7 @@ class DbCommon
                         postal_code
                 ");
 
-                $a = MAddressModel::count();
-                $b = MAddressWModel::count();
-
+                
                 if(MAddressModel::count() == MAddressWModel::count()){
                     return true;
                 }else{
