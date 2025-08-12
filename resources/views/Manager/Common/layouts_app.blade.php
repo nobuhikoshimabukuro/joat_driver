@@ -14,12 +14,14 @@
     <!-- CSS -->
     <link href="{{ asset('css/bootstrap53/bootstrap.css') . $system_version }}" rel="stylesheet" />
     <link href="{{ asset('css/bootstrap53/bootstrap-icons.css') . $system_version }}" rel="stylesheet" />
-    <link href="{{ asset('css/width.css') . $system_version }}" rel="stylesheet" />    
-    <link href="{{ asset('Manager/css/style.css') . $system_version }}" rel="stylesheet" />
-    <link href="{{ asset('Manager/css/original_dashboard.css') . $system_version }}" rel="stylesheet" />
-    <link href="{{ asset('Manager/css/dashboard.css') . $system_version }}" rel="stylesheet" />
-    <link href="{{ asset('Manager/css/dashboard.rtl.css') . $system_version }}" rel="stylesheet" />    
+    <link href="{{ asset('css/width.css') . $system_version }}" rel="stylesheet" />        
+    <link href="{{ asset('css/manager/style.css') . $system_version }}" rel="stylesheet" />
+    <link href="{{ asset('css/manager/original_dashboard.css') . $system_version }}" rel="stylesheet" />
+    <link href="{{ asset('css/manager/dashboard.css') . $system_version }}" rel="stylesheet" />
+    <link href="{{ asset('css/manager/dashboard.css') . $system_version }}" rel="stylesheet" />
+
     
+
     @yield('pagestyle')
 
     <style>      

@@ -10,14 +10,14 @@ class EmployerController extends Controller
     function index(Request $request)
 	{
 
-        return redirect(route('company.dashboard'));
+        return redirect(route('employer.dashboard'));
 	}
 
     function dashboard(Request $request)
 	{
 
         $demo = "";
-		return view('Company.Screen.dashboard', compact('demo'));
+		return view('Employer.Screen.dashboard', compact('demo'));
 	
 	}
 }

@@ -1,6 +1,6 @@
 @extends('Company.Common.layouts_app')
 
-@section('title', 'ダッシュボード')
+@section('title', 'DashBoard')
 
 
 @section('pagestyle')

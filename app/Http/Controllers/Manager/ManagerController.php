@@ -8,10 +8,9 @@ use Illuminate\Http\Request;
 class ManagerController extends Controller
 {
     function index(Request $request)
-	{
-
-		
-        return redirect(route('manager.dashboard'));
+	{		
+		return redirect(route('manager.dashboard'));
+        
 	}
 
     function dashboard(Request $request)
