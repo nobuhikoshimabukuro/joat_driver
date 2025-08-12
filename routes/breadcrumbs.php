@@ -11,7 +11,7 @@ $breadcrumbs = [
     [
         'parent' => null,
         'name' => 'manager.dashboard',
-        'label' => 'DashBoard',
+        'label' => 'ダッシュボード',
         'url' => route('manager.dashboard'),
     ],
 
@@ -57,7 +57,7 @@ $breadcrumbs = [
     [
         'parent' => null,
         'name' => 'company.dashboard',
-        'label' => 'DashBoard',
+        'label' => 'ダッシュボード',
         'url' => route('company.dashboard'),
     ],
 
