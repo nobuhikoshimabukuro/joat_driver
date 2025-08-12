@@ -12,7 +12,7 @@ $masterSubMenu = [
       class="nav-link d-flex align-items-center gap-2 {{ request()->routeIs('manager.dashboard') ? 'active' : '' }}"
       href="{{ route('manager.dashboard') }}"
     >
-      <i class="fas fa-network-wired"></i> Dashboard
+      <i class="fas fa-network-wired"></i> ダッシュボード
     </a>
   </li>
 

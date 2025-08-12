@@ -137,7 +137,7 @@
               
                   <li class="nav-item">
                     <a class="nav-link d-flex align-items-center gap-2 active" href="#">
-                      <i class="fas fa-network-wired"></i> Dashboard
+                      <i class="fas fa-network-wired"></i> ダッシュボード
                     </a>
                   </li>
               
@@ -194,7 +194,7 @@
 
                 <li class="nav-item">
                   <a class="nav-link d-flex align-items-center gap-2 active" href="#">
-                    <i class="fas fa-network-wired"></i> Dashboard
+                    <i class="fas fa-network-wired"></i> ダッシュボード
                   </a>
                 </li>
                 
