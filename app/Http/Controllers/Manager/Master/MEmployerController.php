@@ -26,6 +26,8 @@ use App\Models\MSubKindModel;
 
 // Request ↓
 use App\Http\Requests\MEmployerRequest;
+use App\Http\Requests\ManagerSessionConfirmationRequest;
+
 // Request ↑
 
 class MEmployerController extends Controller
@@ -33,11 +35,13 @@ class MEmployerController extends Controller
     function index(Request $request)
 	{
 
+        $completion_info = session('completion_info') ?? null;
+        session()->forget('completion_info');
 
 		$prefecture_info = MAddressModel::GetPrefectureInfo();
         
-		$m_employer = MEmployerModel::get();
-		return view('Manager.Screen.Master.MEmployer.index', compact('m_employer'));
+		$m_employer = MEmployerModel::withTrashed()->get();
+		return view('Manager.Screen.Master.MEmployer.index', compact('m_employer','completion_info'));
 
 
 	}
@@ -47,7 +51,7 @@ class MEmployerController extends Controller
 
 		$employer_id = $request->employer_id;	
 		
-		$m_employer = MEmployerModel::where('employer_id', $employer_id)->first();
+		$m_employer = MEmployerModel::withTrashed()->where('employer_id', $employer_id)->first();
         
 		if(is_null($m_employer)){
 			$m_employer = new MEmployerModel;
@@ -67,11 +71,12 @@ class MEmployerController extends Controller
 	{
 
 		$now = now();
-        $user_id = session("user_id");
-        $user_id = 1;
+        $user_id = session("manager_user_id");
+
+        $message_parts = "更新処理";
 
         try {
-            $table = MEmployerModel::where('employer_id', $request->employer_id)->first();
+            $table = MEmployerModel::withTrashed()->where('employer_id', $request->employer_id)->first();
 
             if (empty($table)) {
 
@@ -85,6 +90,8 @@ class MEmployerController extends Controller
                     return response()->json(['result_array' => $result_array]);
                 }
 
+                $message_parts = "登録処理";
+
                 // 新規のときだけ
                 $table = new MEmployerModel;                
                 $table->created_by = $user_id;
@@ -93,7 +100,7 @@ class MEmployerController extends Controller
 
             $table->employer_category = $request->employer_category;
             $table->corporate_number = $request->corporate_number;
-            // $table->employer_cd = $request->employer_cd;
+            $table->employer_cd = $request->employer_cd;
             $table->employer_name = $request->employer_name;
             $table->employer_name_kana = $request->employer_name_kana;
             $table->postal_code = $request->postal_code;
@@ -114,45 +121,22 @@ class MEmployerController extends Controller
 
 			$employer_id = $table->employer_id;
 
-            $password_change_flg = $request->password_change_flg ?? "";
+            $completion_info = [
+                'completion_flg'=> true
+                ,'target_row_id'=> $employer_id
+                ,'message'=> "求人元ID【{$employer_id}】の{$message_parts}が完了しました。"
 
-            // if ($password_change_flg != "") {
-            //     // 保存後の driver_id を取得                
-            //     $driver_id = $table->driver_id; // プライマリキーが 'driver_id' の場合
+            ];
+			
 
-            //     //ドライバーの最新のパスワードindexを取得する
-            //     $password_index = m_driver_password_model::get_password_index($driver_id) + 1;
-
-            //     $table = new m_driver_password_model;
-            //     $table->driver_id = $driver_id;
-            //     $table->password_index = $password_index;
-            //     $table->password = $request->password;
-            //     $table->created_by = $user_id;
-            //     $table->created_at = $now;
-            //     $table->updated_by = $user_id;
-            //     $table->updated_at = $now;
-
-            //     // テーブル更新
-            //     $table->save();
-
-            //     if ($password_index > 1) {
-            //         $table = m_driver_password_model::where('driver_id', $driver_id)
-            //             ->where('password_index', ($password_index - 1))
-            //             ->first();
-
-            //         $table->deleted_by = $user_id;
-            //         $table->deleted_at = now();
-
-            //         // テーブル更新
-            //         $table->save();
-            //     }
-            // }
+            session()->put('completion_info', $completion_info);        
 
             $result_array = array(
                 "result" => "success",
                 "message" => "",
+				"url" => route('manager.master.m_employer'),
             );
-
+     
         } catch (Exception $e) {
             $error_message = $e->getMessage();
             
@@ -166,6 +150,71 @@ class MEmployerController extends Controller
         return response()->json(['result_array' => $result_array]);
 
 
+	}
+
+
+    function delete(ManagerSessionConfirmationRequest $request)
+	{
+
+		$now = now();
+        $user_id = session("manager_user_id");
+	    // $process = 1 が削除、$process = 2 が削除から復活;
+        $process = $request->process;
+
+        try {
+            $table = MEmployerModel::withTrashed()->where('employer_id', $request->employer_id)->first();
+
+            if (empty($table)) {
+				$result_array = [
+					"result" => "error",
+					"message" => "指定されたデータが存在しません。",
+				];
+				return response()->json(['result_array' => $result_array]);
+			}
+
+            if ($process == 1) {
+				// 論理削除の処理
+                $message_parts = "削除処理";
+				$table->deleted_by = $user_id;
+				$table->deleted_at = $now;
+			} else {
+                $message_parts = "削除の取消処理";
+				$table->deleted_by = null;
+				$table->deleted_at = null;
+			}
+
+			// 変更を保存
+			$table->save();
+
+            $employer_id = $table->employer_id;
+
+            $completion_info = [
+                'completion_flg'=> true
+                ,'target_row_id'=> $employer_id
+                ,'message'=> "求人元ID【{$employer_id}】の{$message_parts}が完了しました。"
+
+            ];
+			
+
+            session()->put('completion_info', $completion_info);        
+
+            $result_array = array(
+                "result" => "success",
+                "message" => "",
+				"url" => route('manager.master.m_employer'),
+            );
+
+        } catch (Exception $e) {
+            $error_message = $e->getMessage();
+            
+
+            $result_array = [
+                "result" => "error",
+                "message" => "登録処理でエラーが発生しました[{$error_message}]"
+            ];
+        }
+
+        return response()->json(['result_array' => $result_array]);
 	}
 
 }

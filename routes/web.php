@@ -11,7 +11,7 @@ use App\Original\CommonAjax;
 
 Route::get('/', [WebController::class, 'index'])->name('web.index');
 
-Route::get('/test', [MLicenseController::class, 'index'])->name('manager.master.m_employer');
+
 
 
 

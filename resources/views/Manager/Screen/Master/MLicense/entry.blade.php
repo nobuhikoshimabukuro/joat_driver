@@ -1,18 +1,14 @@
+@php
+  $title = "資格・免許情報編集";
+@endphp
 @extends('Manager.Common.layouts_app')
 
-@section('title', '資格・免許情報編集')
+@section('title', $title)
 
 
 @section('pagestyle')
 <!-- 画面別CSS -->
 <style>  
-
-  .form-area label{
-    font-weight: bold;
-    margin-top: 0.3rem;
-    margin-bottom: 0.9rem;
-    
-  }
 
 </style>
 @endsection
@@ -20,11 +16,18 @@
 {{-- メインエリア --}}
 @section('content')  
 
-<button id="save-button" class="btn btn-outline-primary">登録</button>
-<button type="button" class="btn btn-outline-danger error_confirmation_button d-none">エラー確認</button>
+
+<div class="row align-items-center mb-3">
+  <div class="col-auto">
+    <h4 class="mb-0">{{$title}}</h4>
+  </div>  
+</div>
+
+
+
+
 <form id='save-form' class="form-area" action="{{ route('manager.master.m_license.save') }}" method="post" enctype="multipart/form-data">
   @csrf
-
   
     <input type="hidden" id="license_id" name="license_id" value="{{$m_license->license_id}}">
 
@@ -72,11 +75,37 @@
 
   
 
+    <div id="" class="row m-0 p-1">    
+      <div class="col-12 text-center">
+        <button id="save-button" class="btn btn-outline-primary ms-1 me-1">登録</button>
 
-  </div>
+        @if($m_license->license_id != 0)
 
+          @if(!is_null($m_license->deleted_at))
+            <button type="button" 
+            data-process="2"
+            data-license_id="{{$m_license->license_id}}"
+            class="btn btn-outline-success delete-button ms-1 me-1">削除取消</button>       
+          @else
+
+            <button type="button" 
+            data-process="1"
+            data-license_id="{{$m_license->license_id}}"
+            class="btn btn-outline-danger delete-button ms-1 me-1">削除</button>    
+
+          @endif    
+
+        @endif
+        
+        <button type="button" class="btn btn-outline-danger error_confirmation_button ms-1 me-1 d-none">エラー確認</button>
+      </div>
+    </div>
 
 </form>
+
+
+
+
 
 
 @include('Manager.Common.error_modal')
@@ -155,7 +184,7 @@ $(document).ready(function () {
               }              
 
               // {{-- errors を取得しメッセージを設定 --}}
-              errorsHtml += `<button class="btn error_focus_button" data-target="${key}">${value[0]}</button>`; 
+              errorsHtml += `<button class="btn error_focus_button" data-target="${key}">${value[0]}</button><br>`; 
 
             });   
 
@@ -185,6 +214,94 @@ $(document).ready(function () {
     });
 
   });
+
+
+  $(document).on("click", ".delete-button", function (e) {
+
+    e.preventDefault();
+    var button = $(this);
+    var license_id = button.data('license_id');
+    var process = button.data('process');             
+
+    var errorsHtml = "";
+    var LoginAgainFlg = false;
+    var ErrorFlg = false;  
+
+    StandbyProcessing(1,button,"body");  
+
+    ErrorClear(ErrorModalButton,ErrorModalTarget);
+
+
+    var url = "{{ route('manager.master.m_license.delete') }}";
+
+    $.ajax({
+        url: url, // 送信先
+        type: "POST",
+        dataType: 'json',
+        data: {process:process , license_id:license_id},
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+    })
+    .done(function (data, textStatus, jqXHR) {
+
+      var result_array = data.result_array;
+
+      if(result_array["result"] == 'success'){
+
+        var url = result_array["url"];
+        window.location.href = url;
+
+      } else{
+        
+        errorsHtml += `<p>${result_array["message"]}</p>`;
+        ErrorFlg = true;
+        
+      }    
+
+    })
+    .fail(function (data, textStatus, errorThrown) {
+
+      ErrorFlg = true;      
+      
+
+      if (data.status == '422') {
+          
+          $.each(data.responseJSON.errors, function(key, value) {
+              
+            if (key === 'login_again') {
+              LoginAgainFlg = true;
+              // {{-- ループ抜け --}}
+              return false;
+            }             
+
+          });   
+
+
+      } else {
+
+          errorsHtml += '<p>Processing Error</p>';
+          errorsHtml += `<p>${data.status}: ${errorThrown}</p>`;              
+      }        
+
+    })
+    // 通信終了後
+    .always(function (data, textStatus, errorThrown) {
+
+      StandbyProcessing(2,button);
+
+      if(LoginAgainFlg){
+        ShowLoginAgainModal();
+        return false;
+      }
+
+      if(ErrorFlg){
+        ShowErrorModal(errorsHtml , ErrorModalTarget,ErrorModalButton);
+        return false;
+      }
+
+    });
+
+  });
+
 
 
 

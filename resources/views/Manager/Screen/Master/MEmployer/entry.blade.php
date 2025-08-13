@@ -1,18 +1,16 @@
+@php
+  $title = "求人元情報編集";
+@endphp
+
 @extends('Manager.Common.layouts_app')
 
-@section('title', '利用会社情報編集')
+@section('title',  $title)
 
 
 @section('pagestyle')
 <!-- 画面別CSS -->
 <style>  
 
-  .form-area label{
-    font-weight: bold;
-    margin-top: 0.3rem;
-    margin-bottom: 0.9rem;
-    
-  }
 
   .corporate_number_area
    {
@@ -25,16 +23,24 @@
 {{-- メインエリア --}}
 @section('content')  
 
-<button id="save-button" class="btn btn-outline-primary">登録</button>
+<div class="row align-items-center mb-3">
+  <div class="col-auto">
+    <h4 class="mb-0">{{$title}}</h4>
+  </div>  
+</div>
+
+
 <form id='save-form' class="form-area" action="{{ route('manager.master.m_employer.save') }}" method="post" enctype="multipart/form-data">
   @csrf
+  
+  <input type="hidden" id="employer_id" name="employer_id" value="{{$m_employer->employer_id}}">
 
   <div class="row m-0 p-1">
 
     <div class="col-xxl-2 col-xl-3 col-lg-6 col-12 p-1 m-0">
 
       <label for="employer_cd" class="form-label">ログインCD</label>
-      <input type="text" id="employer_cd" 
+      <input type="text" id="employer_cd" name="employer_cd"
       class="form-control" 
       value="{{$m_employer->employer_cd}}"
       >
@@ -237,17 +243,39 @@
       <textarea id="remarks" name="remarks" class="form-control" rows="4">{{$m_employer->remarks}}</textarea>
     </div>   
   </div>
-  
 
+  <div id="" class="row m-0 p-1">    
+    <div class="col-12 text-center">
+      <button id="save-button" class="btn btn-outline-primary ms-1 me-1">登録</button>
 
-  
+      @if($m_employer->employer_id != 0)
 
+        @if(!is_null($m_employer->deleted_at))
+          <button type="button" 
+          data-process="2"
+          data-employer_id="{{$m_employer->employer_id}}"
+          class="btn btn-outline-success delete-button ms-1 me-1">削除取消</button>       
+        @else
 
+          <button type="button" 
+          data-process="1"
+          data-employer_id="{{$m_employer->employer_id}}"
+          class="btn btn-outline-danger delete-button ms-1 me-1">削除</button>    
+
+        @endif    
+
+      @endif
+      
+      <button type="button" class="btn btn-outline-danger error_confirmation_button ms-1 me-1 d-none">エラー確認</button>
+    </div>
   </div>
 
 
 </form>
 
+
+@include('Manager.Common.error_modal')
+@include('Manager.Common.login_again_modal')
 
 @endsection
 @section('pagejs')  
@@ -406,15 +434,27 @@ $(document).ready(function () {
   });
 
 
+  var ErrorModalTarget = ".error_message_area";
+  var ErrorModalButton = ".error_confirmation_button";
+
+
   $(document).on("click", "#save-button", function (e) {
 
     e.preventDefault();
     var button = $(this);
     let f = $('#save-form');    
-    StandbyProcessing(1,button,"body");
-    has_error_flg = false;
+    StandbyProcessing(1,button,"body");  
 
-    var postal_code = postal_code_front + postal_code_back;
+    ErrorClear(ErrorModalButton,ErrorModalTarget);
+
+    var errorsHtml = "";
+    var LoginAgainFlg = false;
+    var ErrorFlg = false;    
+    
+    var postal_code_front = $("#postal_code_front").val();
+    var postal_code_back = $("#postal_code_back").val();
+
+    var postal_code = (postal_code_front + postal_code_back).trim();    
     $('<input type="hidden" name="postal_code">').val(postal_code).appendTo(f);
     
     $.ajax({
@@ -425,51 +465,57 @@ $(document).ready(function () {
     })
     .done(function (data, textStatus, jqXHR) {
 
-        var result_array = data.result_array;
+      var result_array = data.result_array;
 
-        if(result_array["result"] == 'success'){
+      if(result_array["result"] == 'success'){
 
-            location.reload();
+        var url = result_array["url"];
+        window.location.href = url;
 
-        } else{
-
-           
-        }    
+      } else{
+        
+        errorsHtml += `<p>${result_array["message"]}</p>`;
+        ErrorFlg = true;
+        
+      }    
 
     })
     .fail(function (data, textStatus, errorThrown) {
 
-        has_error_flg = true;
-
-        errorsHtml = '<div class="alert alert-danger text-left">';
+      ErrorFlg = true;      
+        
 
         if (data.status == '422') {
-
-            var errorsHtml = "";
+            
             $.each(data.responseJSON.errors, function(key, value) {
                 
+              if (key === 'login_again') {
+                LoginAgainFlg = true;
+                // {{-- ループ抜け --}}
+                return false;
+              }
 
               if (key === 'postal_code') {
-                $(`[name="postal_code_front"]`).addClass('is-invalid');
-                $(`[name="postal_code_back"]`).addClass('is-invalid');
+
+                AddInvalid("postal_code_front");
+                AddInvalid("postal_code_back");                
+
               }else{
-                $(`[name="${key}"]`).addClass('is-invalid');
+
+                AddInvalid(key);
               }              
 
-               // {{-- errors を取得しメッセージを設定 --}}
-               errorsHtml += `<li>${value[0]}</li>`;
+              // {{-- errors を取得しメッセージを設定 --}}
+              errorsHtml += `<button class="btn error_focus_button" data-target="${key}">${value[0]}</button><br>`; 
 
-                
-            });
+            });   
 
 
         } else {
 
-            errorsHtml += '<li>Processing Error</li>';
-            errorsHtml += `<li>${data.status}: ${errorThrown}</li>`;              
-        }
-        
-        errorsHtml += '</div>';              
+            errorsHtml += '<p>Processing Error</p>';
+            errorsHtml += `<p>${data.status}: ${errorThrown}</p>`;              
+        }                   
 
     })
     // 通信終了後
@@ -477,18 +523,105 @@ $(document).ready(function () {
 
         StandbyProcessing(2,button);
 
-        if(has_error_flg){
+        if(LoginAgainFlg){
+          ShowLoginAgainModal();
+          return false;
+        }
 
-            if(data.responseJSON && data.responseJSON.errors && data.responseJSON.errors.hasOwnProperty('login_again')){                
-
-            }else{               
-               
-            }
-
+        if(ErrorFlg){
+          ShowErrorModal(errorsHtml , ErrorModalTarget,ErrorModalButton);
+          return false;
         }
     });
 
   });
+
+
+  $(document).on("click", ".delete-button", function (e) {
+
+    e.preventDefault();
+    var button = $(this);
+    var employer_id = button.data('employer_id');
+    var process = button.data('process');             
+
+    var errorsHtml = "";
+    var LoginAgainFlg = false;
+    var ErrorFlg = false;  
+
+    StandbyProcessing(1,button,"body");  
+
+    ErrorClear(ErrorModalButton,ErrorModalTarget);
+
+
+    var url = "{{ route('manager.master.m_employer.delete') }}";
+
+    $.ajax({
+        url: url, // 送信先
+        type: "POST",
+        dataType: 'json',
+        data: {process:process , employer_id:employer_id},
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+    })
+    .done(function (data, textStatus, jqXHR) {
+
+      var result_array = data.result_array;
+
+      if(result_array["result"] == 'success'){
+
+        var url = result_array["url"];
+        window.location.href = url;
+
+      } else{
+        
+        errorsHtml += `<p>${result_array["message"]}</p>`;
+        ErrorFlg = true;
+        
+      }    
+
+    })
+    .fail(function (data, textStatus, errorThrown) {
+
+      ErrorFlg = true;      
+      
+
+      if (data.status == '422') {
+          
+          $.each(data.responseJSON.errors, function(key, value) {
+              
+            if (key === 'login_again') {
+              LoginAgainFlg = true;
+              // {{-- ループ抜け --}}
+              return false;
+            }             
+
+          });   
+
+
+      } else {
+
+          errorsHtml += '<p>Processing Error</p>';
+          errorsHtml += `<p>${data.status}: ${errorThrown}</p>`;              
+      }        
+
+    })
+    // 通信終了後
+    .always(function (data, textStatus, errorThrown) {
+
+      StandbyProcessing(2,button);
+
+      if(LoginAgainFlg){
+        ShowLoginAgainModal();
+        return false;
+      }
+
+      if(ErrorFlg){
+        ShowErrorModal(errorsHtml , ErrorModalTarget,ErrorModalButton);
+        return false;
+      }
+
+    });
+
+    });
 
 
 

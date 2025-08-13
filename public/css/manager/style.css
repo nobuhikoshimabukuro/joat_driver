@@ -161,3 +161,54 @@
 		opacity: 1;
 	}
 }
+
+
+
+/* index画面↓ */
+  
+.table-responsive {
+    max-height: 75vh; /* 必要に応じて高さ指定 */
+    overflow-y: auto;  /* 縦スクロール用 */
+    overflow-x: auto;  /* 横スクロール用 */
+  }
+  
+  .table-fixed-header thead th {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 5; /* Bootstrapのbtnより上に */
+  }
+  .table-nowrap th,
+  .table-nowrap td {
+    white-space: nowrap;
+  }
+  
+  .delete_row td {
+    background-color: #f8f6e9 !important;
+    color: #fb4946 !important;
+  }
+  
+  @keyframes blink {
+    0%, 100% { border-color: transparent; }
+    50% { border-color: red; }
+  }
+  
+  .highlight-flash {
+    animation: blink 1s ease-in-out infinite; /* 無限ループ */
+    border: 2px solid red;
+    border-radius: 4px;
+    padding: 2px;
+    background-color: #fff8f8;
+  }
+/* index画面↑ */
+
+  
+/* entry画面↓ */
+.form-area label{
+    font-weight: bold;
+    margin-top: 0.3rem;
+    margin-bottom: 0.9rem;
+    
+  }
+
+/* entry画面↑ */

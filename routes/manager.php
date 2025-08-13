@@ -29,9 +29,12 @@ Route::get('/master/m_employer/entry', [MEmployerController::class, 'entry'])
 
 Route::post('/master/m_employer/save', [MEmployerController::class, 'save'])
     ->name('manager.master.m_employer.save');
+
+Route::post('/master/m_employer/delete', [MEmployerController::class, 'delete'])
+    ->name('manager.master.m_employer.delete');  
     
 
-// マスタ管理（免許）
+// マスタ管理（資格免許）
 Route::get('/master/m_license', [MLicenseController::class, 'index'])
     ->name('manager.master.m_license')
     ->middleware('manager.auth');
@@ -45,6 +48,9 @@ Route::post('/master/m_license/save', [MLicenseController::class, 'save'])
 
 Route::post('/master/m_license/delete', [MLicenseController::class, 'delete'])
     ->name('manager.master.m_license.delete');    
+
+
+
 
 // マスタ管理（事業者ユーザー）
 Route::get('/master/m_employer_user', [MEmployerUserController::class, 'index'])

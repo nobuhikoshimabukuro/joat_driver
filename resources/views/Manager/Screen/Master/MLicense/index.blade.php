@@ -1,46 +1,16 @@
+@php
+  $title = "資格・免許情報一覧";
+@endphp
+
 @extends('Manager.Common.layouts_app')
 
-@section('title', '資格・免許情報一覧')
+@section('title',$title)
 
 
 @section('pagestyle')
 <!-- 画面別CSS -->
 <style>  
 
-.table-responsive {
-  max-height: 80vh; /* 必要に応じて高さ指定 */
-  overflow-y: auto;  /* 縦スクロール用 */
-  overflow-x: auto;  /* 横スクロール用 */
-}
-
-.table-fixed-header thead th {
-  position: sticky;
-  top: 0;
-  background: #fff;
-  z-index: 5; /* Bootstrapのbtnより上に */
-}
-.table-nowrap th,
-.table-nowrap td {
-  white-space: nowrap;
-}
-
-.delete_row td {
-  background-color: #f8f6e9 !important;
-  color: #fb4946 !important;
-}
-
-@keyframes blink {
-  0%, 100% { border-color: transparent; }
-  50% { border-color: red; }
-}
-
-.highlight-flash {
-  animation: blink 1s ease-in-out infinite; /* 無限ループ */
-  border: 2px solid red;
-  border-radius: 4px;
-  padding: 2px;
-  background-color: #fff8f8;
-}
 
 
 </style>
@@ -65,7 +35,7 @@
 
 <div class="row align-items-center mb-3">
   <div class="col-auto">
-    <h4 class="mb-0">資格・免許情報一覧</h4>
+    <h4 class="mb-0">{{$title}}</h4>
   </div>
   <div class="col-auto">
     <button class="btn btn-outline-primary page-transition-button"
@@ -147,9 +117,7 @@
     var completion_info = @json($completion_info ?? null);
     if(completion_info){
       DataUpdateSelectRow(completion_info);
-    }
-
-    
+    }   
  
 
     var ErrorModalTarget = ".error_message_area";

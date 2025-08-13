@@ -37,7 +37,7 @@ class MEmployerRequest extends FormRequest
 			'employer_category' => 'required',
             'employer_name' => 'required|string|max:100',
             'employer_name_kana' => ['nullable', 'string', 'max:100', new KatakanaValidation(2)],
-			'postal_code' => ['nullable', 'string', 'max:8', new PostalCodeValidation()],			
+			'postal_code' => ['nullable', 'string', 'max:7', new PostalCodeValidation()],			
             'address1' => 'required|string|max:100',
 			'address2' => 'nullable|string|max:100',
 			'address3' => 'nullable|string|max:100',			

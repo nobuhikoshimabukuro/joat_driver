@@ -47,7 +47,7 @@ class MLicenseController extends Controller
 
 		$license_id = $request->license_id;	
 		
-		$m_license = MLicenseMmodel::where('license_id', $license_id)->first();
+		$m_license = MLicenseMmodel::withTrashed()->where('license_id', $license_id)->first();
         
 		if(is_null($m_license)){
 			$m_license = new MLicenseMmodel;
