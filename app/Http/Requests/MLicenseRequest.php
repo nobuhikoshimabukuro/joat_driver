@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Original\Manager\ManagerCommon;
 
 // Rules ↓
 //郵便番号番号チェック
@@ -53,11 +54,14 @@ class MLicenseRequest extends FormRequest
 	{
 		$validator->after(function ($validator) {
 
-            if(1 == 1){
+            $session_info = ManagerCommon::GetManagerUserInfo();
+
+            if ($session_info->login_status) {    
 
             }else{
                 $validator->errors()->add("login_again", '');
             }
+            
 			
 		});
 	}

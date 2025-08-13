@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use App\Original\Manager\ManagerCommon;
 
 // Rules ↓
 //郵便番号番号チェック
@@ -74,7 +74,15 @@ class MEmployerRequest extends FormRequest
 	public function withValidator($validator)
 	{
 		$validator->after(function ($validator) {
+            
+            $session_info = ManagerCommon::GetManagerUserInfo();
 
+            if ($session_info->login_status) {    
+
+            }else{
+                $validator->errors()->add("login_again", '');
+            }
+            
 			
 		});
 	}

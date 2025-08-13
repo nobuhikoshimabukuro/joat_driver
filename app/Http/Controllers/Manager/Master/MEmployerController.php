@@ -140,6 +140,7 @@ class MEmployerController extends Controller
         } catch (Exception $e) {
             $error_message = $e->getMessage();
             
+            Log::channel('error_log')->info("【employer_save】{$error_message}");
 
             $result_array = [
                 "result" => "error",
@@ -207,10 +208,10 @@ class MEmployerController extends Controller
         } catch (Exception $e) {
             $error_message = $e->getMessage();
             
-
+            Log::channel('error_log')->info("【employer_delete】{$error_message}");
             $result_array = [
                 "result" => "error",
-                "message" => "登録処理でエラーが発生しました[{$error_message}]"
+                "message" => "{$message_parts}でエラーが発生しました[{$error_message}]"
             ];
         }
 

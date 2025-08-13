@@ -127,6 +127,20 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'error_log' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/error_log/error.log'),
+            'days' => 60,
+            'permission' => 0664,            
+        ],
+
+        'sql_log' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/sql_log/sql.log'),
+            'days' => 60,
+            'permission' => 0664,            
+        ],
+
     ],
 
 ];

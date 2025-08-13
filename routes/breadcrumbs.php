@@ -54,6 +54,15 @@ if (!app()->runningInConsole()) {
             'url' => route('manager.master.m_license.entry'),
         ],
 
+        
+        [
+            'parent' => 'manager.dashboard',
+            'name' => 'manager.master.m_address',
+            'label' => '住所情報',
+            'url' => route('manager.master.m_address'),
+        ],
+
+
         // 利用会社start
         // ダッシュボード
         [

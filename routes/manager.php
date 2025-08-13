@@ -5,6 +5,7 @@ use App\Http\Controllers\Manager\ManagerController;
 use App\Http\Controllers\Manager\Master\MEmployerController;
 use App\Http\Controllers\Manager\Master\MEmployerUserController;
 use App\Http\Controllers\Manager\Master\MLicenseController;
+use App\Http\Controllers\Manager\Master\MAddressController;
 
 Route::get('/', [ManagerController::class, 'index'])->name('manager.index');
 Route::get('/index', [ManagerController::class, 'index'])->name('manager.index');
@@ -47,7 +48,18 @@ Route::post('/master/m_license/save', [MLicenseController::class, 'save'])
     ->name('manager.master.m_license.save');    
 
 Route::post('/master/m_license/delete', [MLicenseController::class, 'delete'])
-    ->name('manager.master.m_license.delete');    
+    ->name('manager.master.m_license.delete');  
+    
+    
+    
+// マスタ管理（住所）
+Route::get('/master/m_address', [MAddressController::class, 'index'])
+->name('manager.master.m_address')
+->middleware('manager.auth');
+
+Route::post('/master/m_address/save', [MAddressController::class, 'save'])
+->name('manager.master.m_address.save');    
+
 
 
 

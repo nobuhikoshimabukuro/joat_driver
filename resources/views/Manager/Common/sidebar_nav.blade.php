@@ -1,8 +1,9 @@
 @php
 $masterSubMenu = [
-    (object)["href" => route('manager.master.m_employer'), "title" => "求人元マスタ", "icon" => "fas fa-building"],
-    (object)["href" => route('manager.master.m_employer_user'), "title" => "求人元ユーザーマスタ", "icon" => "fas fa-user"],
-    (object)["href" => route('manager.master.m_license'), "title" => "資格・免許マスタ", "icon" => "fas fa-user"],
+    (object)["href" => route('manager.master.m_employer'), "title" => "求人元マスタ", "icon" => "fas fa-building"],       // そのままビル
+    (object)["href" => route('manager.master.m_employer_user'), "title" => "求人元ユーザーマスタ", "icon" => "fas fa-users"], // ユーザ複数
+    (object)["href" => route('manager.master.m_license'), "title" => "資格・免許マスタ", "icon" => "fas fa-certificate"], // 証明書
+    (object)["href" => route('manager.master.m_address'), "title" => "住所マスタ", "icon" => "fas fa-map-marker-alt"],    // 地図ピン
 ];
 @endphp
 

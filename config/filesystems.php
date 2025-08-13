@@ -60,6 +60,14 @@ return [
             'report' => false,
         ],
 
+         //住所CSV用のディスクを追加
+        'AddressCsvPath' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/AddressData'),     
+            'url' => '/storage/AddressData',
+            'visibility' => 'public',
+        ],
+
     ],
 
     /*
@@ -77,12 +85,6 @@ return [
         public_path('storage') => storage_path('app/public'),
     ],
 
-    //住所CSV用のディスクを追加
-    'AddressCsvPath' => [
-        'driver' => 'local',
-        'root' => storage_path('app/public/AddressData'),     
-        'url' => '/storage/AddressData',
-        'visibility' => 'public',
-    ],
+   
 
 ];

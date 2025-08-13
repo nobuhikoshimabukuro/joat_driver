@@ -89,13 +89,13 @@ class DbCommon
                 $jigyosyoCsvName = $csvFilenames->jigyosyoCsvName;
 
                 // ファイルの存在チェック
-                if (!Storage::disk('address_csv_path')->exists($normalCsvName)) {
+                if (!Storage::disk('AddressCsvPath')->exists($normalCsvName)) {
                     throw new Exception("都道府県CSVファイルが存在しません: " . $normalCsvName);
                 }
 
                 // Storage 経由でファイルを取得
-                $normalContent = Storage::disk('address_csv_path')->get($normalCsvName);  
-                $jigyosyoContent = Storage::disk('address_csv_path')->get($jigyosyoCsvName);  
+                $normalContent = Storage::disk('AddressCsvPath')->get($normalCsvName);  
+                $jigyosyoContent = Storage::disk('AddressCsvPath')->get($jigyosyoCsvName);  
             
                 if(!$normalContent){
                     throw new Exception("CSVファイルの読み込みに失敗");
