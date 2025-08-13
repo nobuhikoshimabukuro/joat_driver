@@ -115,9 +115,10 @@
     </div>
 
     <!-- JS -->
-    <script src="{{ asset('js/app.js') . $system_version }}"></script>
+    
     <script src="{{ asset('js/jquery-3.6.0.min.js') . $system_version }}"></script>
     <script src="{{ asset('js/bootstrap53/bootstrap.js') . $system_version }}"></script>
+    <script src="{{ asset('js/app.js') . $system_version }}"></script>
     <script src="{{ asset('js/fontawesome.js') . $system_version }}"></script>
     <script src="{{ asset('js/common.js') . $system_version }}"></script>
     <script src="{{ asset('js/common_ajax.js') . $system_version }}"></script>    
@@ -125,24 +126,6 @@
     <script>
 
       $(function(){
-
-        const targetId = @json(session('target_row_id'));
-        
-        if (targetId) {
-            
-          const targetRow = document.querySelector(`[data-target_row="${targetId}"]`);
-            
-          if (targetRow) {
-
-                targetRow.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });                
-          }
-
-        }
-
-
         setTimeout(function(){
             EndLoader();
         }, 1000);

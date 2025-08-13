@@ -90,6 +90,7 @@ $(document).ready(function () {
  
 
   var ErrorModalTarget = ".error_message_area";
+  var ErrorModalButton = ".error_confirmation_button";
 
   $(document).on("click", "#save-button", function (e) {
 
@@ -98,7 +99,7 @@ $(document).ready(function () {
     let f = $('#save-form');    
     StandbyProcessing(1,button,"body");  
 
-    ErrorClear(".error_confirmation_button",ErrorModalTarget);
+    ErrorClear(ErrorModalButton,ErrorModalTarget);
 
     var errorsHtml = "";
     var LoginAgainFlg = false;
@@ -177,7 +178,7 @@ $(document).ready(function () {
         }
 
         if(ErrorFlg){
-          ShowErrorModal(errorsHtml , ErrorModalTarget);
+          ShowErrorModal(errorsHtml , ErrorModalTarget,ErrorModalButton);
           return false;
         }
 

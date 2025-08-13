@@ -332,7 +332,7 @@ function ErrorClear(buttonName , targetArea ) {
   $('.is-invalid').removeClass('is-invalid');
 
   if(buttonName != ""){
-    $(buttonName).removeClass('d-none');
+    $(buttonName).addClass('d-none');
   }
 
   if(targetArea != ""){
@@ -354,7 +354,7 @@ function AddInvalid(ErrorElement) {
   
 }
 
-function ShowErrorModal(element , target = "") {
+function ShowErrorModal(element , target = "" , buttonName = "") {
   
   // すべてのモーダルを非表示にする
   $(".modal").modal('hide');
@@ -362,9 +362,18 @@ function ShowErrorModal(element , target = "") {
   // メッセージを表示する要素追加
   if(target != ""){
     $(element).appendTo(target);
-  }   
-   // エラーモーダルを表示する
-  $("#error-modal").modal('show');
+  }     
+
+  if(buttonName != ""){
+    $(buttonName).removeClass('d-none');
+  }
+
+  // エラーモーダルを表示する
+  var Modal = new bootstrap.Modal(document.getElementById('error-modal'), {
+    backdrop: 'static',
+    keyboard: false
+  });
+  Modal.show();  
 
   
 }
@@ -402,7 +411,11 @@ $(document).on("click", ".error_focus_button", function (e) {
 
 $(document).on("click", ".error_confirmation_button", function (e) {
 
-  $("#error-modal").modal('show');
+  var Modal = new bootstrap.Modal(document.getElementById('error-modal'), {
+    backdrop: 'static',
+    keyboard: false
+  });
+  Modal.show();  
   
 });
 
@@ -413,11 +426,52 @@ function ShowLoginAgainModal() {
   // すべてのモーダルを非表示にする
   $(".modal").modal('hide');
 
-   // 再ログインモーダルを表示する
-  $("#login_again-modal").modal('show');
+  // 再ログインモーダルを表示する
+  var Modal = new bootstrap.Modal(document.getElementById('login_again-modal'), {
+    backdrop: 'static',
+    keyboard: false
+  });
+  Modal.show();
 
   
 }
+
+
+// モーダル要素取得
+const infoModal = document.getElementById('info-modal');
+
+// モーダルインスタンス作成（既に作っていたらそのままでOK）
+const modalInstance = new bootstrap.Modal(infoModal, {
+  backdrop: 'static',
+  keyboard: false
+});
+
+function DataUpdateSelectRow(completion_info) {
+  var targetId = completion_info && completion_info.target_row_id ? completion_info.target_row_id : null;
+
+  if (targetId) {
+    const targetRow = document.querySelector(`[data-target_row="${targetId}"]`);
+    if (targetRow) {
+      targetRow.scrollIntoView({behavior: 'smooth', block: 'center'});
+      targetRow.classList.add('highlight-flash');
+    }
+  }
+
+  if (completion_info && completion_info.message) {
+    document.querySelector('.info_message_area').innerHTML = completion_info.message;
+  }
+
+  modalInstance.show();
+}
+
+// モーダルが閉じた時のイベント
+infoModal.addEventListener('hidden.bs.modal', () => {
+  const highlighted = document.querySelector('.highlight-flash');
+  if (highlighted) {
+    highlighted.classList.remove('highlight-flash');
+  }
+});
+
 
 
 

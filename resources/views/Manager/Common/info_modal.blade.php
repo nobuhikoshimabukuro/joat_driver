@@ -1,4 +1,8 @@
-{{-- インフォメーションーモーダル--}}
+<style>
+
+</style>
+
+{{-- infoモーダル--}}
 <div class="modal fade" id="info-modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="info-modal-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -10,7 +14,8 @@
 
             <div class="modal-body">
                 <div class="col-12">
-                    <div class="info_message_area"></div>                
+                    <div class="info_message_area">
+                    </div>
                 </div>
                 
             </div>

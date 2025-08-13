@@ -43,6 +43,9 @@ Route::get('/master/m_license/entry', [MLicenseController::class, 'entry'])
 Route::post('/master/m_license/save', [MLicenseController::class, 'save'])
     ->name('manager.master.m_license.save');    
 
+Route::post('/master/m_license/delete', [MLicenseController::class, 'delete'])
+    ->name('manager.master.m_license.delete');    
+
 // マスタ管理（事業者ユーザー）
 Route::get('/master/m_employer_user', [MEmployerUserController::class, 'index'])
     ->name('manager.master.m_employer_user')
