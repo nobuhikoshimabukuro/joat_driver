@@ -309,6 +309,28 @@ class DbCommon
                         postal_code
                 ");
 
+    
+                $areaInfo = self::GetAreaInfo();
+
+                foreach ($areaInfo as $Info) {
+
+                    $prefecture_code = $Info->prefecture_code;
+                    $area_code = $Info->area_code;
+                    $area_name = $Info->area_name;                   
+
+                    MAddressModel::
+                    where('prefecture_code', $prefecture_code)							
+                    ->update(
+                        [
+                            'area_code' => $area_code,	
+                            'area_name' => $area_name,	
+                        ]
+                    );
+
+                    
+                }
+
+
                 
                 if(MAddressModel::count() == MAddressWModel::count()){
                     return true;
@@ -340,32 +362,76 @@ class DbCommon
 
 
     //伝票番号から請求書発行済みか確認
-    public static function check_billing_info($slip_number)
+    public static function GetAreaInfo()
     {
 
-        try {
-            $result = false;
-			
-            // 伝票番号がセットされている場合は発行済みと判断
-            $data = t_billing_details_model::where("slip_number", $slip_number)							
-							->whereRaw("COALESCE(billing_number, '') <> ''")    
-                            ->first();
-            
-            //データ存在時は、請求書発行済みと判断
-            if(!is_null($data)){
-                $result = true;
-            }
-            
-							
-            
+        $areas = [];
+
+        // 北海道地方
+        $areas[] = (object)[ "prefecture_code" => "01", "area_code" => "01", "area_name" => "北海道地方" ];
+
+        // 東北地方
+        $areas[] = (object)[ "prefecture_code" => "02", "area_code" => "02", "area_name" => "東北地方" ];
+        $areas[] = (object)[ "prefecture_code" => "03", "area_code" => "02", "area_name" => "東北地方" ];
+        $areas[] = (object)[ "prefecture_code" => "04", "area_code" => "02", "area_name" => "東北地方" ];
+        $areas[] = (object)[ "prefecture_code" => "05", "area_code" => "02", "area_name" => "東北地方" ];
+        $areas[] = (object)[ "prefecture_code" => "06", "area_code" => "02", "area_name" => "東北地方" ];
+        $areas[] = (object)[ "prefecture_code" => "07", "area_code" => "02", "area_name" => "東北地方" ];
+
+        // 関東地方
+        $areas[] = (object)[ "prefecture_code" => "08", "area_code" => "03", "area_name" => "関東地方" ];
+        $areas[] = (object)[ "prefecture_code" => "09", "area_code" => "03", "area_name" => "関東地方" ];
+        $areas[] = (object)[ "prefecture_code" => "10", "area_code" => "03", "area_name" => "関東地方" ];
+        $areas[] = (object)[ "prefecture_code" => "11", "area_code" => "03", "area_name" => "関東地方" ];
+        $areas[] = (object)[ "prefecture_code" => "12", "area_code" => "03", "area_name" => "関東地方" ];
+        $areas[] = (object)[ "prefecture_code" => "13", "area_code" => "03", "area_name" => "関東地方" ];
+        $areas[] = (object)[ "prefecture_code" => "14", "area_code" => "03", "area_name" => "関東地方" ];
+
+        // 中部地方
+        $areas[] = (object)[ "prefecture_code" => "15", "area_code" => "04", "area_name" => "中部地方" ];
+        $areas[] = (object)[ "prefecture_code" => "16", "area_code" => "04", "area_name" => "中部地方" ];
+        $areas[] = (object)[ "prefecture_code" => "17", "area_code" => "04", "area_name" => "中部地方" ];
+        $areas[] = (object)[ "prefecture_code" => "18", "area_code" => "04", "area_name" => "中部地方" ];
+        $areas[] = (object)[ "prefecture_code" => "19", "area_code" => "04", "area_name" => "中部地方" ];
+        $areas[] = (object)[ "prefecture_code" => "20", "area_code" => "04", "area_name" => "中部地方" ];
+        $areas[] = (object)[ "prefecture_code" => "21", "area_code" => "04", "area_name" => "中部地方" ];
+        $areas[] = (object)[ "prefecture_code" => "22", "area_code" => "04", "area_name" => "中部地方" ];
+        $areas[] = (object)[ "prefecture_code" => "23", "area_code" => "04", "area_name" => "中部地方" ];
+
+        // 近畿地方
+        $areas[] = (object)[ "prefecture_code" => "24", "area_code" => "05", "area_name" => "近畿地方" ];
+        $areas[] = (object)[ "prefecture_code" => "25", "area_code" => "05", "area_name" => "近畿地方" ];
+        $areas[] = (object)[ "prefecture_code" => "26", "area_code" => "05", "area_name" => "近畿地方" ];
+        $areas[] = (object)[ "prefecture_code" => "27", "area_code" => "05", "area_name" => "近畿地方" ];
+        $areas[] = (object)[ "prefecture_code" => "28", "area_code" => "05", "area_name" => "近畿地方" ];
+        $areas[] = (object)[ "prefecture_code" => "29", "area_code" => "05", "area_name" => "近畿地方" ];
+        $areas[] = (object)[ "prefecture_code" => "30", "area_code" => "05", "area_name" => "近畿地方" ];
+
+        // 中国地方
+        $areas[] = (object)[ "prefecture_code" => "31", "area_code" => "06", "area_name" => "中国地方" ];
+        $areas[] = (object)[ "prefecture_code" => "32", "area_code" => "06", "area_name" => "中国地方" ];
+        $areas[] = (object)[ "prefecture_code" => "33", "area_code" => "06", "area_name" => "中国地方" ];
+        $areas[] = (object)[ "prefecture_code" => "34", "area_code" => "06", "area_name" => "中国地方" ];
+        $areas[] = (object)[ "prefecture_code" => "35", "area_code" => "06", "area_name" => "中国地方" ];
+
+        // 四国地方
+        $areas[] = (object)[ "prefecture_code" => "36", "area_code" => "07", "area_name" => "四国地方" ];
+        $areas[] = (object)[ "prefecture_code" => "37", "area_code" => "07", "area_name" => "四国地方" ];
+        $areas[] = (object)[ "prefecture_code" => "38", "area_code" => "07", "area_name" => "四国地方" ];
+        $areas[] = (object)[ "prefecture_code" => "39", "area_code" => "07", "area_name" => "四国地方" ];
+
+        // 九州・沖縄地方
+        $areas[] = (object)[ "prefecture_code" => "40", "area_code" => "08", "area_name" => "九州・沖縄地方" ];
+        $areas[] = (object)[ "prefecture_code" => "41", "area_code" => "08", "area_name" => "九州・沖縄地方" ];
+        $areas[] = (object)[ "prefecture_code" => "42", "area_code" => "08", "area_name" => "九州・沖縄地方" ];
+        $areas[] = (object)[ "prefecture_code" => "43", "area_code" => "08", "area_name" => "九州・沖縄地方" ];
+        $areas[] = (object)[ "prefecture_code" => "44", "area_code" => "08", "area_name" => "九州・沖縄地方" ];
+        $areas[] = (object)[ "prefecture_code" => "45", "area_code" => "08", "area_name" => "九州・沖縄地方" ];
+        $areas[] = (object)[ "prefecture_code" => "46", "area_code" => "08", "area_name" => "九州・沖縄地方" ];
+        $areas[] = (object)[ "prefecture_code" => "47", "area_code" => "08", "area_name" => "九州・沖縄地方" ];
 
 
-		} catch (Exception $e) {
-			
-		}
-
-
-        return $result;
+        return $areas;
     }
 
         

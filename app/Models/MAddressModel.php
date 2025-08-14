@@ -9,7 +9,8 @@ class MAddressModel extends Model
     protected $connection = 'mysql';
     protected $table = 'm_address';    
     protected $primaryKey = 'id';  
-
+	public $timestamps = false;
+	
     public static function GetPrefectureInfo()
     {
         return self::select('prefecture_code', 'prefecture', 'prefecture_kana')

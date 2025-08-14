@@ -19,6 +19,8 @@ return new class extends Migration
         Schema::create('m_address', function (Blueprint $table) {
             $table->bigIncrements('id')->comment('一意識別子');
             $table->string('municipality_code', 10)->nullable()->comment('全国地方公共団体コード');
+            $table->string('area_code', 2)->nullable()->comment('地方CD');
+            $table->string('area_name', 100)->nullable()->comment('地方名');
             $table->string('prefecture_code', 2)->nullable()->comment('都道府県CD');
             $table->string('old_postal_code', 5)->nullable()->comment('旧郵便番号（5桁）');
             $table->string('postal_code', 7)->nullable()->comment('郵便番号（7桁）');
