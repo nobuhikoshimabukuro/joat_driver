@@ -25,7 +25,7 @@ class WebController extends Controller
 {
     function index(Request $request)
 	{	
-		$qr_src = common::test();
+		$qr_src = Common::test();
 
 		return view('Web.Screen.index', compact('qr_src'));
 	}
