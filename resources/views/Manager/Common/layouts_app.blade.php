@@ -104,7 +104,11 @@
           <!-- メインエリア共通 -->          
           <div class="row m-0 p-0 hide-under-md Breadcrumbs">
             <div class="col-12 m-0 p-1 d-flex justify-content-end">
-              {{ Breadcrumbs::render(Route::currentRouteName()) }}
+              {{-- {{ Breadcrumbs::render(Route::currentRouteName()) }} --}}
+
+              @if (Breadcrumbs::exists(Route::currentRouteName()))
+                {{ Breadcrumbs::render(Route::currentRouteName()) }}
+              @endif
             </div>
           </div>
 

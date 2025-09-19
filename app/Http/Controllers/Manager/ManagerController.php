@@ -22,6 +22,7 @@ use Barryvdh\Snappy\Facades\SnappyPdf as SnappyPDF;
 use League\Csv\Reader;
 use Illuminate\Support\Facades\File;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 // controller作成時ここまでコピー↑
@@ -39,6 +40,101 @@ use App\Models\MManagerUserModel;
 
 class ManagerController extends Controller
 {
+
+    function test(Request $request)
+	{		
+        $demo = "";
+        return view('Manager.Screen.test', compact('demo'));        
+	}
+
+
+    function excel_upload(Request $request)
+	{		
+
+        
+        if ($request->hasFile('excel')) {
+            $file = $request->file('excel');
+            $filename = $file->getClientOriginalName();
+    
+             // PhpSpreadsheetで読み込み
+            $spreadsheet = IOFactory::load($file->getPathname());
+
+            // アクティブシート取得
+            $sheet = $spreadsheet->getActiveSheet();
+
+            // 読み込むセル情報を定義
+            $cells = self::cell_info();
+
+            
+            // return_array をオブジェクトにする
+            $return_array = new \stdClass();
+            foreach ($cells as $item) {
+                $return_array->{$item->name} = $sheet->getCell($item->cell)->getValue() ?? "";
+            }
+
+            // JSON返却用
+            $result_array = [
+                "result" => "success",
+                "message" => "アップロード完了: " . $filename,
+                "return_array" => $return_array,
+            ];
+
+        } else {
+            $result_array = [
+                "result" => "error",
+                "message" => "ファイルが選択されていません",
+            ];
+        }
+
+
+
+      
+        return response()->json(['result_array' => $result_array]);
+	}
+
+
+    function excel_download(Request $request)
+	{		
+
+        // 読み込むセル情報を定義
+        $cells = self::cell_info();
+
+        $outputExcelFileName = "test.xlsx";
+        $relativeOutputDir = "excel/output";
+
+        $templatePath = storage_path("app/excel/template/test.xlsx");
+        $outputExcelPath = storage_path("app/{$relativeOutputDir}/{$outputExcelFileName}");
+
+        $spreadsheet = IOFactory::load($templatePath);
+        $sheet = $spreadsheet->getSheetByName('main');
+
+        
+        foreach ($cells as $item) {
+
+            $name = $item->name;
+
+            $sheet->setCellValue($item->cell, $request->$name);            
+        }
+
+        //excelの保存
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save($outputExcelPath);
+
+
+	}
+
+
+    function cell_info()
+	{		
+        $cells = [
+            (object)["name" => "job_title", "cell" => "A1"],
+            (object)["name" => "job_type",  "cell" => "A2"],
+        ];
+        
+        return $cells;
+	}
+
+
     function index(Request $request)
 	{		
 		// セッション情報取得

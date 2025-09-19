@@ -7,6 +7,11 @@ use App\Http\Controllers\Manager\Master\MEmployerUserController;
 use App\Http\Controllers\Manager\Master\MLicenseController;
 use App\Http\Controllers\Manager\Master\MAddressController;
 
+
+Route::get('/test', [ManagerController::class, 'test'])->name('manager.test');
+Route::post('/excel_upload', [ManagerController::class, 'excel_upload'])->name('manager.excel_upload');
+
+
 Route::get('/', [ManagerController::class, 'index'])->name('manager.index');
 Route::get('/index', [ManagerController::class, 'index'])->name('manager.index');
 
